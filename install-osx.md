@@ -6,7 +6,9 @@ brew update
 brew doctor (consider the feedback from brew doctor carefully if you can)
 
 2. Use homebrew to install the node.js language and the zeromq networking library:
+
 brew install node
+
 brew install zeromq
 
 3. Use npm (node package manager, installed with node) to install the following node packages:
