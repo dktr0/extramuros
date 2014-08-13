@@ -1,9 +1,11 @@
 extramuros installation instructions (Mac OS X)
 
 1. Install, update and check the homebrew package manager (if you don't already have it).  From a terminal window:
+```
 ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 brew update
 brew doctor (consider the feedback from brew doctor carefully if you can)
+```
 
 2. Use homebrew to install the node.js language and the zeromq networking library:
 
