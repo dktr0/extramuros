@@ -12,19 +12,18 @@ brew doctor (consider the feedback from brew doctor carefully if you can)
 brew install node
 brew install zeromq
 ```
-
-3. Use npm (node package manager, installed with node) to install the following node packages:
-```
-npm install express -g
-npm install coffee-script -g
-npm install zmq -g
-npm install share@"0.6.3" -g
-```
-
-4. Download the extramuros folder and place it somewhere conveniently accessible from your terminal:
+3. Download the extramuros folder and place it somewhere conveniently accessible from your terminal (code below places it in your home folder ~):
 ```
 cd ~
 git clone https://github.com/d0kt0r0/extramuros.git
+`
+
+4. Use npm (node package manager, installed with node) to install the node packages required by extramuros:
 ```
+cd extramuros
+npm install
+```
+
+``
 
 That's it for installation - now you are ready to test and play! (see README.md)
