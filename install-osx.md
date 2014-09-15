@@ -16,14 +16,12 @@ brew install zeromq
 ```
 cd ~
 git clone https://github.com/d0kt0r0/extramuros.git
-`
+```
 
 4. Use npm (node package manager, installed with node) to install the node packages required by extramuros:
 ```
 cd extramuros
 npm install
 ```
-
-``
 
 That's it for installation - now you are ready to test and play! (see README.md)
