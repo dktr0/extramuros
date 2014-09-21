@@ -13,7 +13,7 @@ Launch a test client or clients (one client per application instance (i.e. Tidal
 cd extramuros (change to the directory where you put extramuros)
 node client.js tcp://127.0.0.1:8001 (launch a client for testing, replace 127.0.0.1 with actual IP address if the server is running on a different machine than this one)
 ```
-Launch a web browser and point it to the server as follows: 127.0.0.1:8001 (replace 127.0.0.1 with actual IP address if on a different machine)
+Launch a web browser and point it to the server as follows: 127.0.0.1:8000 (replace 127.0.0.1 with actual IP address if on a different machine)
 Enter the chosen password in the interface that appears in the browser.
 Enter some code into one of the text boxes and click "eval".
 Go back to your client terminal window - you should see the code you entered appear there. If so, it's working and you can move onto connecting the client.js code to your performance language.
