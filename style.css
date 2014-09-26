@@ -1,0 +1,20 @@
+body {
+  background: black;
+  color: white;
+}
+
+textarea {
+  background: black;
+  color: white;
+  width: 400px;
+}
+
+.text {
+  background: black;
+  color: white;
+}
+
+.evalButton {
+  background: darkGrey;
+  color: white;
+}
