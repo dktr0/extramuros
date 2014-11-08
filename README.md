@@ -3,35 +3,49 @@ extramuros - language-neutral shared-buffer networked live coding system
 
 See install-osx.md for installation instructions.  See this document for usage.
 
-Launch a server (one server per collaborative performance group, must be on an Internet location that all client machines can reach, i.e. a publicly reachable Internet address, this may require configuration of your router or network) as follows. Create a new terminal window and:
-```
-cd extramuros (change to the directory where you put extramuros)
-node server.js password (launch the server process, replace password with a password that will be required in the web browser to play together)
-```
-Launch a test client or clients (one client per application instance (i.e. Tidal, sclang) that needs to get shared code from the server; you can have multiple clients on a single machine if you want, and you can have a server and a client on the same machine - probably best to put them in different terminal windows in that case though, for convenience). I suggest testing clients separately from a performance language (Tidal, SC) first. Create a new terminal window and:
-```
-cd extramuros (change to the directory where you put extramuros)
-node client.js tcp://127.0.0.1:8001 (launch a client for testing, replace 127.0.0.1 with actual IP address if the server is running on a different machine than this one)
-```
-Launch a web browser and point it to the server as follows: 127.0.0.1:8000 (replace 127.0.0.1 with actual IP address if on a different machine)
-Enter the chosen password in the interface that appears in the browser.
-Enter some code into one of the text boxes and click "eval".
-Go back to your client terminal window - you should see the code you entered appear there. If so, it's working and you can move onto connecting the client.js code to your performance language.
-Press Ctrl-C twice to end the "node client.js" process so you can restart it.
+The big picture: This is software for collaborative live coding.  On one machine, you run an extramuros "server".  Then, from as many machines as you like, you use a web browser to connect to the server and code into shared text buffers.  Finally, and again from as many machines as you like, your run the extramuros "client" code in order to receive code from the server and pipe it to the language interpreter of your choice (SuperCollider, Tidal, etc).  Think of the "client" code as a way for machines to listen in on a public stream of code.
 
-If the test client from step #2 worked, then you're ready to launch a client piped into a SuperCollider session. In a terminal window:
+The connections between the web browsers, the server, and the client are structured to make it easier to do collaborative live coding across various firewalls, institutional networks, etc.  Both the web browser and the client are making "outbound" TCP connections to the server.  So long as the server is generally reachable you don't have to worry about the web browsers and clients being firewalled.  (Moreover: This type of collaborative live coding is also robust to bandwidth challenges as it generally just involves sending small bits of text back and forth.)   
+
+To launch a server (only one person in a collaborative performance group needs to do this) - and assuming extramuros has been cloned/downloaded to your user folder:
 ```
-cd /Applications/SuperCollider/SuperCollider.app/Contents/Resources/ (change to your SuperCollider app's Resources directory)
-node ~/extramuros/client.js tcp://127.0.0.1:8001 | ./sclang (launch the client, piped to SuperCollider, replace 127.0.0.1 with server address if different machine)
+cd ~/extramuros
+node server.js insertFunnyPasswordHere
 ```
 
-Now in the web browser here's a simple test that it's working - enter the following in one of the browser page's text boxes:
+To verify that the server is running, point your browser to the IP address of the server and port 8000.  If the server is running on your current machine, then:
 ```
-Server.default = Server.internal.boot;
-x = { SinOsc.ar(440,mul:0.05);}.play;
-You won't have cmd-period to control your SC instance, so you can free the synth by evaluating x.free in a different text window.
+http:\\127.0.0.1:8000
 ```
 
-All of this is rough, unfriendly and probably even mistaken in some cases. So let's all help make it better!...
+To launch a test client just to verify that you can listen in on the code as people click "eval" in the browser.  (note: If you already have a server in one terminal window it is convenient to launch the client in a second terminal window):
+```
+cd ~/extramuros
+node client.js tcp://127.0.0.1:8001
+```
 
--d0kt0r0
+To test, enter some code into the text buffers in the web browser, make sure you have entered the funny password you chose (forgetting to enter the password in the browser window is a common mistake) and click "eval".  If everything is working, you should see the code from the browser appear in the terminal where you launched node client.js.  By the way, you can terminate the client (or server) by pressing Ctrl-C twice in the relevant terminal window.
+
+If that test worked, you're ready to launch a client piped into a language interpreter.  Here's a slightly abstract example of what that would look like: 
+```
+cd ~/extramuros
+node client.js tcp://127.0.0.1:8001 | pathToYourFavouriteInterpreter
+```
+
+For SuperCollider, one strategy is to pipe the text to sclang.  This is an example using a default SC installation on OSX (and assuming extramuros has been cloned into your user folder).  Note that you won't have cmd-period to interrupt your SC synths, so it's helpful to have other ways of stopping/freeing things:
+```
+cd /Applications/SuperCollider/SuperCollider.app/Contents/Resources/ 
+node ~/extramuros/client.js tcp://127.0.0.1:8001 | ./sclang
+```
+
+For Tidal, one strategy is to pipe the text to GHCI and use the provided .ghci file in the extramuros folder to initialize Tidal.  Note that for this to work you must be in the extramuros project folder (so that ghci can find the .ghci file that came with your extramuros download):
+```
+cd ~/extramuros
+node client.js tcp://127.0.0.1:8001 | ghci -XOverloadedStrings
+```
+
+Now in the web browser, enter some code, make sure you have entered the correct password, and click "eval".  Not only should you see the evaluated code in the terminal - hopefully you will also hear it's effect!  Note: All of this is rough, unfriendly and probably even mistaken in some cases. So let's all help make it better!...
+
+-d0kt0r0 (aka David Ogborn)
+
+PS: thanks to the following people for contributing to extramuros in various ways (additions, fixes, testing, championing, etc): Holger Ballweg, Alexandra Cárdenas, Ian Jarvis, Alex McLean, Ashley Sagar, Eldad Tsabary and anyone else who should be named here (submit a pull request...)
