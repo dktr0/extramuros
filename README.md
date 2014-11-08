@@ -13,9 +13,9 @@ cd ~/extramuros
 node server.js insertFunnyPasswordHere
 ```
 
-To verify that the server is running, point your browser to the IP address of the server and port 8000.  If the server is running on your current machine, then:
+To verify that the server is running, point your browser to the IP address of the server and port 8000.  If the server is not running on your local machine, replace 127.0.0.1 with the actual address of the server in the following (and in all subsequent examples):
 ```
-http:\\127.0.0.1:8000
+http://127.0.0.1:8000
 ```
 
 To launch a test client just to verify that you can listen in on the code as people click "eval" in the browser.  (note: If you already have a server in one terminal window it is convenient to launch the client in a second terminal window):
