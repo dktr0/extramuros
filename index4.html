@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>extramuros</title>
+ <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body onload="setup()">
+
+<table>
+
+<tr>
+<td></td>
+<td>Password: <input type="password" name="password" length="32" id="password" class="text"/></td>
+</tr>
+
+<tr>
+<td><input type="button" value="eval" class="evalButton" onclick="postSignal('/eval1');"/></td>
+<td><textarea id="edit1" rows="10" disabled>******</textarea></td>
+<td><input type="button" value="eval" class="evalButton" onclick="postSignal('/eval2');"/></td>
+<td><textarea id="edit2" rows="10" disabled>******</textarea></td>
+</tr>
+
+<tr>
+<td><input type="button" value="eval" class="evalButton" onclick="postSignal('/eval3');"/></td>
+<td><textarea id="edit3" rows="10" disabled>******</textarea></td>
+<td><input type="button" value="eval" class="evalButton" onclick="postSignal('/eval4');"/></td>
+<td><textarea id="edit4" rows="10" disabled>******</textarea></td>
+</tr>
+
+<tr>
+<td colspan="2"><textarea id="chat" rows="6" disabled style="width: 445px;">******</textarea></td>
+</tr>
+
+</table>
+
+<div class="text"><a href="client.js">client.js</a></div>
+
+<script src="/channel/bcsocket.js"></script>
+<script src="/share/share.uncompressed.js"></script>
+<script src="/share/textarea.js"></script>
+<script src="/share/json.js"></script>
+<!-- <script src="jquery.min.js"></script> -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+
+function postSignal(name) {
+  var password = document.getElementById('password').value; 
+  $.post(name + "-" + password, function(x) {});
+}
+
+function openEditor(name) {
+  sharejs.open(name,'text',function(error,doc) {
+    if(error) console.log(error);
+    else {
+      var elem = document.getElementById(name);
+      elem.disabled = false;
+      doc.attach_textarea(elem);
+    }
+  });
+}
+
+function setup() {
+  openEditor('edit1');
+  openEditor('edit2');
+  openEditor('edit3');
+  openEditor('edit4');
+  openEditor('edit5');
+  openEditor('edit6');
+  openEditor('edit7');
+  openEditor('edit8');
+  openEditor('chat');
+}
+</script>
+
+</body>
+</html>
