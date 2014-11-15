@@ -41,32 +41,9 @@
 <script src="/share/share.uncompressed.js"></script>
 <script src="/share/textarea.js"></script>
 <script src="/share/json.js"></script>
+<!-- <script src="jquery.min.js"></script> -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script>
-
-function postSignal(name) {
-  var password = document.getElementById('password').value; 
-  $.post(name + "-" + password, function(x) {});
-}
-
-function openEditor(name) {
-  sharejs.open(name,'text',function(error,doc) {
-    if(error) console.log(error);
-    else {
-      var elem = document.getElementById(name);
-      elem.disabled = false;
-      doc.attach_textarea(elem);
-    }
-  });
-}
-
-function setup() {
-  openEditor('edit1');
-  openEditor('edit2');
-  openEditor('edit3');
-  openEditor('chat');
-}
-</script>
+<script src="browser.js"></script>
 
 </body>
 </html>

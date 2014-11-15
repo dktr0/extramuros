@@ -16,30 +16,30 @@
 
 <tr>
 <td><input type="button" value="eval" class="evalButton" onclick="postSignal('/eval1');"/></td>
-<td><textarea id="edit1" rows="2" disabled>******</textarea></td>
+<td><textarea id="edit1" rows="5" disabled>******</textarea></td>
 <td><input type="button" value="eval" class="evalButton" onclick="postSignal('/eval2');"/></td>
-<td><textarea id="edit2" rows="2" disabled>******</textarea></td>
+<td><textarea id="edit2" rows="5" disabled>******</textarea></td>
 </tr>
 
 <tr>
 <td><input type="button" value="eval" class="evalButton" onclick="postSignal('/eval3');"/></td>
-<td><textarea id="edit3" rows="2" disabled>******</textarea></td>
+<td><textarea id="edit3" rows="5" disabled>******</textarea></td>
 <td><input type="button" value="eval" class="evalButton" onclick="postSignal('/eval4');"/></td>
-<td><textarea id="edit4" rows="2" disabled>******</textarea></td>
+<td><textarea id="edit4" rows="5" disabled>******</textarea></td>
 </tr>
 
 <tr>
 <td><input type="button" value="eval" class="evalButton" onclick="postSignal('/eval5');"/></td>
-<td><textarea id="edit5" rows="2" disabled>******</textarea></td>
+<td><textarea id="edit5" rows="5" disabled>******</textarea></td>
 <td><input type="button" value="eval" class="evalButton" onclick="postSignal('/eval6');"/></td>
-<td><textarea id="edit6" rows="2" disabled>******</textarea></td>
+<td><textarea id="edit6" rows="5" disabled>******</textarea></td>
 </tr>
 
 <tr>
 <td><input type="button" value="eval" class="evalButton" onclick="postSignal('/eval7');"/></td>
-<td><textarea id="edit7" rows="2" disabled>******</textarea></td>
+<td><textarea id="edit7" rows="5" disabled>******</textarea></td>
 <td><input type="button" value="eval" class="evalButton" onclick="postSignal('/eval8');"/></td>
-<td><textarea id="edit8" rows="2" disabled>******</textarea></td>
+<td><textarea id="edit8" rows="5" disabled>******</textarea></td>
 </tr>
 
 
@@ -55,37 +55,10 @@
 <script src="/share/share.uncompressed.js"></script>
 <script src="/share/textarea.js"></script>
 <script src="/share/json.js"></script>
+<!-- <script src="jquery.min.js"></script> -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script>
+<script src="browser.js"></script>
 
-function postSignal(name) {
-  var password = document.getElementById('password').value; 
-  $.post(name + "-" + password, function(x) {});
-}
-
-function openEditor(name) {
-  sharejs.open(name,'text',function(error,doc) {
-    if(error) console.log(error);
-    else {
-      var elem = document.getElementById(name);
-      elem.disabled = false;
-      doc.attach_textarea(elem);
-    }
-  });
-}
-
-function setup() {
-  openEditor('edit1');
-  openEditor('edit2');
-  openEditor('edit3');
-  openEditor('edit4');
-  openEditor('edit5');
-  openEditor('edit6');
-  openEditor('edit7');
-  openEditor('edit8');
-  openEditor('chat');
-}
-</script>
 
 </body>
 </html>
