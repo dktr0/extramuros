@@ -45,7 +45,10 @@
 <script>
 
 function postSignal(name) {
-  var password = document.getElementById('password').value; 
+  var password = document.getElementById('password').value;
+  if(password == null || password == "") {
+    alert("You must enter a password to evaluate code.");
+  }
   $.post(name + "-" + password, function(x) {});
 }
 
