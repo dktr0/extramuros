@@ -49,7 +49,9 @@ function postSignal(name) {
   if(password == null || password == "") {
     alert("You must enter a password to evaluate code.");
   }
-  $.post(name + "-" + password, function(x) {});
+  else {
+    $.post(name + "-" + password, function(x) {});
+  }
 }
 
 function openEditor(name) {
