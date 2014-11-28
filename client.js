@@ -1,11 +1,5 @@
 var stderr = process.stderr;
 
-// initialize tidal
-// console.log(':m Sound.Tidal.Context');
-//for(var x=1;x<10;x++) { console.log('d' + x + ' <- dirtstream "d' + x + '"'); }
-//console.log('bps <- bpsSetter');
-//stderr.write("Tidal initialized\n");
-
 // subscribe to 0mq socket with code to evaluate 
 var address = process.argv[2];
 var zmq = require('zmq');
