@@ -41,6 +41,7 @@ node ~/extramuros/client.js --server 127.0.0.1 --newlines-to-spaces | ./sclang
 You can also use short options, in which case the last line of the preceding example would be as follows:
 ```
 node ~/extramuros/client.js -s 127.0.0.1 -n | ./sclang
+```
 
 For Tidal, one strategy is to pipe the text to GHCI and use the provided .ghci file in the extramuros folder to initialize Tidal.  Note that for this to work you must be in the extramuros project folder (so that ghci can find the .ghci file that came with your extramuros download):
 ```
