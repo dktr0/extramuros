@@ -21,7 +21,7 @@ http://127.0.0.1:8000
 To launch a test client just to verify that you can listen in on the code as people click "eval" in the browser.  (note: If you already have a server in one terminal window it is convenient to launch the client in a second terminal window):
 ```
 cd ~/extramuros
-node client.js tcp://127.0.0.1:8001
+node client.js --server 127.0.0.1
 ```
 
 To test, enter some code into the text buffers in the web browser, make sure you have entered the funny password you chose (forgetting to enter the password in the browser window is a common mistake) and click "eval".  If everything is working, you should see the code from the browser appear in the terminal where you launched node client.js.  By the way, you can terminate the client (or server) by pressing Ctrl-C twice in the relevant terminal window.
@@ -29,23 +29,27 @@ To test, enter some code into the text buffers in the web browser, make sure you
 If that test worked, you're ready to launch a client piped into a language interpreter.  Here's a slightly abstract example of what that would look like: 
 ```
 cd ~/extramuros
-node client.js tcp://127.0.0.1:8001 | pathToYourFavouriteInterpreter
+node client.js --server 127.0.0.1 | pathToYourFavouriteInterpreter
 ```
 
-For SuperCollider, one strategy is to pipe the text to sclang.  This is an example using a default SC installation on OSX (and assuming extramuros has been cloned into your user folder).  Note that you won't have cmd-period to interrupt your SC synths, so it's helpful to have other ways of stopping/freeing things:
+For SuperCollider, one strategy is to pipe the text to sclang.  This is an example using a default SC installation on OSX (and assuming extramuros has been cloned into your user folder).  We use the --newlines-to-spaces option so that line breaks in the browser will become spaces in the code sent to SuperCollider, allowing you to stretch expressions over multiple lines.  Note that you won't have cmd-period to interrupt your SC synths, so it's helpful to have other ways of stopping/freeing things:
 ```
 cd /Applications/SuperCollider/SuperCollider.app/Contents/Resources/ 
-node ~/extramuros/client.js tcp://127.0.0.1:8001 | ./sclang
+node ~/extramuros/client.js --server 127.0.0.1 --newlines-to-spaces | ./sclang
 ```
+
+You can also use short options, in which case the last line of the preceding example would be as follows:
+```
+node ~/extramuros/client.js -s 127.0.0.1 -n | ./sclang
 
 For Tidal, one strategy is to pipe the text to GHCI and use the provided .ghci file in the extramuros folder to initialize Tidal.  Note that for this to work you must be in the extramuros project folder (so that ghci can find the .ghci file that came with your extramuros download):
 ```
 cd ~/extramuros
-node client.js tcp://127.0.0.1:8001 | ghci -XOverloadedStrings
+node client.js -s 127.0.0.1 | ghci -XOverloadedStrings
 ```
 
 Now in the web browser, enter some code, make sure you have entered the correct password, and click "eval".  Not only should you see the evaluated code in the terminal - hopefully you will also hear it's effect!  Note: All of this is rough, unfriendly and probably even mistaken in some cases. So let's all help make it better!...
 
 -d0kt0r0 (aka David Ogborn)
 
-PS: thanks to the following people for contributing to extramuros in various ways (additions, fixes, testing, championing, etc): Holger Ballweg, Alexandra Cárdenas, Ian Jarvis, Alex McLean, Ashley Sagar, Eldad Tsabary and anyone else who should be named here (submit a pull request...)
+PS: thanks to the following people for contributing to extramuros in various ways (additions, fixes, testing, championing, etc): Holger Ballweg, Alexandra Cárdenas, Ian Jarvis, Alex McLean, Ashley Sagar, Eldad Tsabary, Scott Wilson and anyone else who should be named here (submit a pull request...)
