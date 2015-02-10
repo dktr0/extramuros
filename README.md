@@ -1,7 +1,7 @@
 extramuros - language-neutral shared-buffer networked live coding system
 ==========
 
-See install-osx.md for installation instructions.  See this document for usage.
+See install-osx.md and install-win.md for installation instructions.  See this document for usage.
 
 The big picture: This is software for collaborative live coding.  On one machine, you run an extramuros "server".  Then, from as many machines as you like, you use a web browser to connect to the server and code into shared text buffers.  Finally, and again from as many machines as you like, your run the extramuros "client" code in order to receive code from the server and pipe it to the language interpreter of your choice (SuperCollider, Tidal, etc).  Think of the "client" code as a way for machines to listen in on a public stream of code.
 
