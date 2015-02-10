@@ -28,5 +28,6 @@ function setup() {
   openEditor('edit6');
   openEditor('edit7');
   openEditor('edit8');
+  openEditor('edit9');
   openEditor('chat');
 }
