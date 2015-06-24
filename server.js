@@ -35,33 +35,7 @@ try {
   options.db = {type: 'redis'};
 } catch (e) {
     console.log("redis not available");
-
 }
-
-var WebSocket = require('ws');
-var osc = require('osc');
-var wss = new WebSocket.Server({port: 1337});
-var udp = new osc.UDPPort( {
-    localAddress: "0.0.0.0",
-    localPort: 1337
-});
-
-udp.on("message",function(m) {
-    console.log(m.address,m.args);
-});
-
-wss.on('connection',function(ws) {
-    udp.addListener("message",function(m) {
-	var n = {
-	    'type': 'osc',
-	    'address': m.address,
-	    'args': m.args
-	};
-	ws.send(JSON.stringify(n));
-    });
-});
-
-udp.open();
 
 var port = 8000;
 var password = process.argv[2];
