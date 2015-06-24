@@ -20,14 +20,29 @@ function openEditor(name) {
 }
 
 function setup() {
-  openEditor('edit1');
-  openEditor('edit2');
-  openEditor('edit3');
-  openEditor('edit4');
-  openEditor('edit5');
-  openEditor('edit6');
-  openEditor('edit7');
-  openEditor('edit8');
-  openEditor('edit9');
-  openEditor('chat');
+    window.WebSocket = window.WebSocket || window.MozWebSocket;
+    var url = 'ws://' + location.hostname + ':1337';
+    console.log("attempting websocket connection to " + url);
+    var con = new WebSocket(url);
+    con.onopen = function () {
+	alert("websocket connection opened");
+    };
+    con.onerror = function () {
+	alert("websocket connection error");
+    };
+    con.onmessage = function () {
+	alert("message received");
+    };
+    openEditor('edit1');
+    openEditor('edit2');
+    openEditor('edit3');
+    openEditor('edit4');
+    openEditor('edit5');
+    openEditor('edit6');
+    openEditor('edit7');
+    openEditor('edit8');
+    openEditor('edit9');
+    openEditor('chat');
 }
+
+

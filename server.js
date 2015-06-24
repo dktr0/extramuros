@@ -1,4 +1,3 @@
-
 require('coffee-script');
 var express = require('express');
 var server = express();
@@ -34,12 +33,41 @@ var options = {
 try {
   require('redis');
   options.db = {type: 'redis'};
-} catch (e) {}
+} catch (e) {
+    console.log("redis not available");
+
+}
+
+var WebSocket = require('ws');
+var osc = require('osc');
+var wss = new WebSocket.Server({port: 1337});
+var udp = new osc.UDPPort( {
+    localAddress: "0.0.0.0",
+    localPort: 1337
+});
+
+udp.on("message",function(m) {
+    console.log(m.address,m.args);
+});
+
+wss.on('connection',function(ws) {
+    udp.addListener("message",function(m) {
+	var n = {
+	    'type': 'osc',
+	    'address': m.address,
+	    'args': m.args
+	};
+	ws.send(JSON.stringify(n));
+    });
+});
+
+udp.open();
 
 var port = 8000;
 var password = process.argv[2];
-console.log("Shared buffer server by David Ogborn using sharejs v" + sharejs.version);
-console.log("password is: " + password);
+console.log("extramuros");
+console.log(" using sharejs v" + sharejs.version);
+console.log(" password is: " + password);
 // Attach the sharejs REST and Socket.io interfaces to the server
 var shareserver = sharejs.server.attach(server, options);
 
