@@ -43,7 +43,7 @@ var osc = require('osc');
 var wss = new WebSocket.Server({port: 1337});
 var udp = new osc.UDPPort( {
     localAddress: "0.0.0.0",
-    localPort: 1337
+    localPort: 7772
 });
 
 udp.on("message",function(m) {

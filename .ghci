@@ -1,5 +1,5 @@
 import Sound.Tidal.Context
-d1 <- dirtStream
+-- d1 <- dirtStream
 d2 <- dirtStream
 d3 <- dirtStream
 d4 <- dirtStream
@@ -11,3 +11,7 @@ d9 <- dirtStream
 d10 <- dirtStream
 (cps, getNow) <- bpsUtils
 
+let vis = dirt {timestamp = NoStamp, latency = 0.04}
+vs1 <- stream "127.0.0.1" 7772 vis
+ds1 <- stream "127.0.0.1" 7771 dirt
+let d1 p = vs1 p >> ds1 p

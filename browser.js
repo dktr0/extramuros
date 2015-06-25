@@ -25,13 +25,22 @@ function setup() {
     console.log("attempting websocket connection to " + url);
     var con = new WebSocket(url);
     con.onopen = function () {
-	alert("websocket connection opened");
+	console.log("extramuros websocket connection opened");
     };
     con.onerror = function () {
-	alert("websocket connection error");
+	console.log("ERROR opening extramuros websocket connection");
     };
-    con.onmessage = function () {
-	alert("message received");
+    con.onmessage = function (m) {
+	var data = JSON.parse(m.data);
+	if(data.address == "/play") {
+	    var event = {
+		sound: data.args[1]
+	    };
+	    play(event);
+	}
+	else {
+	    console.log(data);
+	}
     };
     openEditor('edit1');
     openEditor('edit2');
@@ -44,5 +53,10 @@ function setup() {
     openEditor('edit9');
     openEditor('chat');
 }
+
+function play(e) {
+    $('#lastPlayEvent').html(e.sound);
+}
+
 
 
