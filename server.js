@@ -35,9 +35,9 @@ try {
   options.db = {type: 'redis'};
 } catch (e) {
     console.log("redis not available");
-
 }
 
+<<<<<<< HEAD
 var WebSocket = require('ws');
 var osc = require('osc');
 var wss = new WebSocket.Server({port: 1337});
@@ -63,6 +63,8 @@ wss.on('connection',function(ws) {
 
 udp.open();
 
+=======
+>>>>>>> master
 var port = 8000;
 var password = process.argv[2];
 console.log("extramuros");
