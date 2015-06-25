@@ -20,7 +20,6 @@ function openEditor(name) {
 }
 
 function setup() {
-<<<<<<< HEAD
     window.WebSocket = window.WebSocket || window.MozWebSocket;
     var url = 'ws://' + location.hostname + ':1337';
     console.log("attempting websocket connection to " + url);
@@ -43,8 +42,6 @@ function setup() {
 	    console.log(data);
 	}
     };
-=======
->>>>>>> master
     openEditor('edit1');
     openEditor('edit2');
     openEditor('edit3');
@@ -60,6 +57,3 @@ function setup() {
 function play(e) {
     $('#lastPlayEvent').html(e.sound);
 }
-
-
-
