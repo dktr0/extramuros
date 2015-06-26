@@ -29,14 +29,6 @@ var options = {
   }
 };
 
-// Lets try and enable redis persistance if redis is installed...
-try {
-  require('redis');
-  options.db = {type: 'redis'};
-} catch (e) {
-    console.log("redis not available");
-}
-
 var WebSocket = require('ws');
 var osc = require('osc');
 var wss = new WebSocket.Server({port: 1337});
@@ -49,7 +41,10 @@ udp.on("message",function(m) {
     console.log(m.address,m.args);
 });
 
+var password = process.argv[2];
+
 wss.on('connection',function(ws) {
+    // route incoming OSC back to browsers
     udp.addListener("message",function(m) {
 	var n = {
 	    'type': 'osc',
@@ -58,37 +53,33 @@ wss.on('connection',function(ws) {
 	};
 	ws.send(JSON.stringify(n));
     });
+    // handle evaluation requests from browsers
+    ws.on("message",function(m) {
+	console.log(m);
+	var n = JSON.parse(m);
+	console.log("n is " + n.request);
+	if(n.request == "eval") {
+	    if(n.password == password) {
+		evaluateBuffer(n.bufferName);
+	    }
+	}
+    });
 });
 
 udp.open();
 
+function evaluateBuffer(name) {
+    sharejs.client.open(name,'text','http://127.0.0.1:' + port + '/channel', function (err,doc) {
+	console.log(doc.getText());
+	pub.send(doc.getText());
+    });
+}
+
 var port = 8000;
-var password = process.argv[2];
 console.log("extramuros");
 console.log(" using sharejs v" + sharejs.version);
 console.log(" password is: " + password);
-// Attach the sharejs REST and Socket.io interfaces to the server
 var shareserver = sharejs.server.attach(server, options);
-
-function publishCode(id,res) {
-  sharejs.client.open(id,'text','http://127.0.0.1:' + port + '/channel', function (err,doc) {
-    console.log(doc.getText());
-    pub.send(doc.getText());
-  });
-  res.writeHead(303, {location: '/index.html'});
-  res.write('');
-  res.end();
-}
-
-server.post('/eval1-'+password, function(req, res, next) { publishCode('edit1',res); });
-server.post('/eval2-'+password, function(req, res, next) { publishCode('edit2',res); });
-server.post('/eval3-'+password, function(req, res, next) { publishCode('edit3',res); });
-server.post('/eval4-'+password, function(req, res, next) { publishCode('edit4',res); });
-server.post('/eval5-'+password, function(req, res, next) { publishCode('edit5',res); });
-server.post('/eval6-'+password, function(req, res, next) { publishCode('edit6',res); });
-server.post('/eval7-'+password, function(req, res, next) { publishCode('edit7',res); });
-server.post('/eval8-'+password, function(req, res, next) { publishCode('edit8',res); });
-server.post('/eval9-'+password, function(req, res, next) { publishCode('edit9',res); });
 
 server.get('/?', function(req, res, next) {
   res.writeHead(302, {location: '/index.html'});
