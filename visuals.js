@@ -51,6 +51,12 @@ function setupShiftEnter() {
 	    eval(e3);
 	};
     });
+    $('#local1').keyup(function (event) {
+	if(event.keyCode==13 && event.shiftKey) {
+	    var l1 = $('#local1').val();
+	    eval(l1);
+	};
+    });
 }
 
 function clear () {c.clearRect(0,0,w,h)};
