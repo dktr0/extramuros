@@ -37,34 +37,39 @@ var udp = new osc.UDPPort( {
     localPort: 7772
 });
 
-udp.on("message",function(m) {
-    console.log(m.address,m.args);
-});
+// udp.on("message",function(m) {
+//    console.log(m.address,m.args);
+// });
 
 var password = process.argv[2];
 
 wss.on('connection',function(ws) {
     // route incoming OSC back to browsers
-    udp.addListener("message",function(m) {
+    var udpListener = function(m) {
 	var n = {
 	    'type': 'osc',
 	    'address': m.address,
 	    'args': m.args
 	};
 	ws.send(JSON.stringify(n));
-    });
+    };
+    udp.addListener("message",udpListener);
     // handle evaluation requests from browsers
     ws.on("message",function(m) {
-	console.log(m);
 	var n = JSON.parse(m);
-	console.log("n is " + n.request);
 	if(n.request == "eval") {
 	    if(n.password == password) {
 		evaluateBuffer(n.bufferName);
 	    }
 	}
     });
+    ws.on("close",function(code,msg) {
+	console.log("");
+	udp.removeListener("message",udpListener);
+    });
 });
+
+
 
 udp.open();
 
