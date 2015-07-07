@@ -27,6 +27,7 @@ function setup() {
     openEditor('edit8');
     openEditor('edit9');
     openEditor('chat');
+    setupKeyboardHandlers();
     setupVisuals();
 }
 
@@ -58,3 +59,12 @@ function openEditor(name) {
     }
 }
 
+function setupKeyboardHandlers() {
+    $('textarea').keypress(function (event) {
+	if(event.keyCode == 13 && event.shiftKey) {
+	    event.preventDefault();
+	    var code = $(this).val();
+	    eval(code);
+	};
+    });
+}
