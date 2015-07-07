@@ -61,10 +61,16 @@ function openEditor(name) {
 
 function setupKeyboardHandlers() {
     $('textarea').keypress(function (event) {
-	if(event.keyCode == 13 && event.shiftKey) {
+	if(event.keyCode == 13 && event.ctrlKey) {
+	    // ctrl+Enter: evaluate text as JavaScript in local browser
 	    event.preventDefault();
 	    var code = $(this).val();
 	    eval(code);
+	};
+	if(event.keyCode == 13 && event.shiftKey) {
+	    // shift+Enter: evaluate buffer globally through the server   
+	    event.preventDefault();
+	    evaluateBuffer(event.target.id);
 	};
     });
 }
