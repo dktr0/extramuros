@@ -6,7 +6,7 @@ var w; // width of our drawing context
 var h; // height of our drawing context
 var c; // a canvas context to use in live coding of visuals 
 var draw = function() {}; // redefined in performance, called every animation frame
-var event = function(e) {}; // redefined in performance, called with events from server 
+var play = function(e) {}; // redefined in performance, called with events from server (i.e. /play messages from Tidal)
  
 function setupVisuals() {
     // add a new canvas adjusted to display dimensions and store context for later use
