@@ -16,7 +16,6 @@ function setupVisuals() {
     c = document.getElementById('gcanvas').getContext('2d');
     // and activate our animation callback function 'tick'
     requestAnimationFrame(tick); // activate our animation callback function 'tick'
-    setupShiftEnter(); // now shift-enter in any textarea evaluates that as JS for livecoding of visuals
     console.log('visuals are set');
 };
 
@@ -36,27 +35,6 @@ function tick() {
 
 function retick() { // useful if in livecoding an error crashes animation callback
     requestAnimationFrame(tick);
-}
-
-function setupShiftEnter() {
-    $('#edit1').keyup(function (event) {
-	if (event.keyCode == 13 && event.shiftKey) {
-	    var e1 = $('#edit1').val();
-	    eval(e1);
-	};
-    });
-    $('#edit3').keyup(function (event) {
-	if(event.keyCode==13 && event.shiftKey) {
-	    var e3 = $('#edit3').val();
-	    eval(e3);
-	};
-    });
-    $('#local1').keyup(function (event) {
-	if(event.keyCode==13 && event.shiftKey) {
-	    var l1 = $('#local1').val();
-	    eval(l1);
-	};
-    });
 }
 
 function clear () {c.clearRect(0,0,w,h)};
@@ -175,4 +153,6 @@ var drawSquare0 = function(name, type, colour, size, lineWidth) {
 		; 
 		}
 
+
 };
+
