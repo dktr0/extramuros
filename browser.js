@@ -13,15 +13,9 @@ function setup() {
     };
     ws.onmessage = function (m) {
 	var data = JSON.parse(m.data);
-	if(data.address == "/play") {
-	    var event = {
-		sound: data.args[1]
-	    };
-	    play(event);
-	}
-	else {
-	    console.log(data);
-	}
+	var address = data.address.substring(1);
+	eval( address + "(data.args)");
+	// ummm... we should check to make sure the function exists first!...
     };
     openEditor('edit1');
     openEditor('edit2');
@@ -33,6 +27,7 @@ function setup() {
     openEditor('edit8');
     openEditor('edit9');
     openEditor('chat');
+    setupVisuals();
 }
 
 function evaluateBuffer(name) {
@@ -63,6 +58,3 @@ function openEditor(name) {
     }
 }
 
-function play(e) {
-    $('#lastPlayEvent').html(e.sound);
-}
