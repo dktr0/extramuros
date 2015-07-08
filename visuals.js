@@ -42,7 +42,7 @@ function clear () {c.clearRect(0,0,w,h)};
 function fade (x) {
     if(x !="stop") setTimeout(function() {fade()},fadeRate);
     c.beginPath();
-    c.fillStyle = "rgba(255,255,255,0.1)";	
+    c.fillStyle = "rgba(0,0,0,0.1)";	
     c.fillRect(0,0,w,h);
     c.closePath();
 }
@@ -135,7 +135,7 @@ var drawSquare = function(name, type, colour,size,lw) {
 		
 var drawSquare0 = function(name, type, colour, size, lineWidth) {
 		
-		if (type !== "solid") {
+		if (type != "solid") {
 		c.beginPath(); 
 		c.lineWidth = 1;  
 		c.rect(w/2+Math.sin(i[name])*w/2,h/2+Math.cos(3.01*i[name])*h/2,size, size);
