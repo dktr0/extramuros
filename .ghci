@@ -43,3 +43,43 @@ let d9 p = vs9 p >> ds9 p
 vs10 <- stream "127.0.0.1" 7772 vis
 ds10 <- dirtStream
 let d10 p = vs10 p >> ds10 p
+
+vs11 <- stream "127.0.0.1" 7772 vis
+ds11 <- dirtStream
+let d11 p = vs11 p >> ds11 p
+
+vs12 <- stream "127.0.0.1" 7772 vis
+ds12 <- dirtStream
+let d12 p = vs12 p >> ds12 p
+
+vs13 <- stream "127.0.0.1" 7772 vis
+ds13 <- dirtStream
+let d13 p = vs13 p >> ds13 p
+
+vs14 <- stream "127.0.0.1" 7772 vis
+ds14 <- dirtStream
+let d14 p = vs14 p >> ds14 p
+
+vs15 <- stream "127.0.0.1" 7772 vis
+ds15 <- dirtStream
+let d15 p = vs15 p >> ds15 p
+
+vs16 <- stream "127.0.0.1" 7772 vis
+ds16 <- dirtStream
+let d16 p = vs16 p >> ds16 p
+
+vs17 <- stream "127.0.0.1" 7772 vis
+ds17 <- dirtStream
+let d17 p = vs17 p >> ds17 p
+
+vs18 <- stream "127.0.0.1" 7772 vis
+ds18 <- dirtStream
+let d18 p = vs18 p >> ds18 p
+
+vs19 <- stream "127.0.0.1" 7772 vis
+ds19 <- dirtStream
+let d19 p = vs19 p >> ds19 p
+
+vs20 <- stream "127.0.0.1" 7772 vis
+ds20 <- dirtStream
+let d20 p = vs20 p >> ds20 p
