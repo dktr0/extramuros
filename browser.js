@@ -6,7 +6,7 @@ var osc = new Osc();
 
 function setup() {
     window.WebSocket = window.WebSocket || window.MozWebSocket;
-    var url = 'ws://' + location.hostname + ':1337';
+    var url = 'ws://' + location.hostname + ':8002';
     console.log("attempting websocket connection to " + url);
     ws = new WebSocket(url);
     ws.onopen = function () {

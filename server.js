@@ -31,7 +31,7 @@ var options = {
 
 var WebSocket = require('ws');
 var osc = require('osc');
-var wss = new WebSocket.Server({port: 1337});
+var wss = new WebSocket.Server({port: 8002});
 wss.broadcast = function(data) {
   for (var i in this.clients)
     this.clients[i].send(data);
