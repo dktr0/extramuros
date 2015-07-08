@@ -31,7 +31,12 @@ var options = {
 
 var WebSocket = require('ws');
 var osc = require('osc');
-var wss = new WebSocket.Server({port: 1337});
+var wss = new WebSocket.Server({port: 8002});
+wss.broadcast = function(data) {
+  for (var i in this.clients)
+    this.clients[i].send(data);
+};
+
 var udp = new osc.UDPPort( {
     localAddress: "0.0.0.0",
     localPort: 7772
@@ -62,6 +67,11 @@ wss.on('connection',function(ws) {
 		evaluateBuffer(n.bufferName);
 	    }
 	}
+	if(n.request == "evalJS") {
+	    if(n.password == password) {
+		evaluateJavaScriptGlobally(n.code);
+	    }
+	}
     });
     ws.on("close",function(code,msg) {
 	console.log("");
@@ -80,6 +90,11 @@ function evaluateBuffer(name) {
     });
 }
 
+function evaluateJavaScriptGlobally(code) {
+    var n = { 'type': 'js', 'code': code };
+    wss.broadcast(JSON.stringify(n));
+}
+
 var port = 8000;
 console.log("extramuros");
 console.log(" using sharejs v" + sharejs.version);
@@ -93,6 +108,6 @@ server.get('/?', function(req, res, next) {
 server.listen(port);
 console.log("Listening on port " + port + " for HTTP");
 
-process.title = 'shared-buffer-server';
+process.title = 'extramuros';
 process.on('SIGINT',function() { pub.close(); });
 
