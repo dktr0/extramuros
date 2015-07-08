@@ -34,10 +34,16 @@ function tick() {
 }
 
 function retick() { // useful if in livecoding an error crashes animation callback
+    console.log("retick");
     requestAnimationFrame(tick);
 }
 
-function clear () {c.clearRect(0,0,w,h)};
+function clear () {
+    c.save();
+    c.setTransform(1,0,0,1,0,0);
+    c.clearRect(0,0,w,h)
+    c.restore();
+};
 
 function fade (x) {
     if(x !="stop") setTimeout(function() {fade()},fadeRate);

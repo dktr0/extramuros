@@ -72,23 +72,44 @@ function openEditor(name) {
 }
 
 function setupKeyboardHandlers() {
-    $('textarea').keypress(function (event) {
-	if(event.keyCode == 13 && event.shiftKey && event.ctrlKey) {
+    $('textarea').keydown(function (event) {
+	if(event.which == 13 && event.shiftKey && event.ctrlKey) {
 	    // ctrl+shift+enter: evaluate buffer as Javascript through server
 	    event.preventDefault();
 	    var code = $(this).val();
 	    evaluateJavaScriptGlobally(code);
 	}
-	else if(event.keyCode == 13 && event.ctrlKey) {
+	else if(event.which == 13 && event.ctrlKey) {
 	    // ctrl+Enter: evaluate text as JavaScript in local browser
 	    event.preventDefault();
 	    var code = $(this).val();
 	    eval(code);
 	}
-	else if(event.keyCode == 13 && event.shiftKey) {
+	else if(event.which == 13 && event.shiftKey) {
 	    // shift+Enter: evaluate buffer globally through the server   
 	    event.preventDefault();
 	    evaluateBuffer(event.target.id);
-	};
+	}
+	else if(event.which == 67 && event.ctrlKey && event.shiftKey) {
+	    // ctrl+shift+c: global clear() on visuals
+	    event.preventDefault();
+	    evaluateJavaScriptGlobally("clear();");
+	}
+	else if(event.which == 82 && event.ctrlKey && event.shiftKey) {
+	    // ctrl+shift+r: global retick() on visuals
+	    event.preventDefault();
+	    evaluateJavaScriptGlobally("retick();");
+	}
+	else if(event.which == 67 && event.altKey) {
+	    // alt+c: global clear() on visuals
+	    event.preventDefault();
+	    evaluateJavaScriptGlobally("clear();");
+	}
+	else if(event.which == 82 && event.altKey) {
+	    // alt+r: global retick() on visuals
+	    event.preventDefault();
+	    evaluateJavaScriptGlobally("retick();");
+	}
+
     });
 }
