@@ -44,12 +44,3 @@ function clear () {
     c.clearRect(0,0,w,h)
     c.restore();
 };
-
-// function fade (x) {
-//     if(x !="stop") setTimeout(function() {fade()},fadeRate);
-//     c.beginPath();
-//     c.fillStyle = "rgba(0,0,0,0.1)";	
-//     c.fillRect(0,0,w,h);
-//     c.closePath();
-// }
-
