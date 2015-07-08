@@ -40,7 +40,7 @@ function retick() { // useful if in livecoding an error crashes animation callba
 function clear () {c.clearRect(0,0,w,h)};
 
 function fade (x) {
-    if(x!="stop") setTimeout(function() {fade()},fadeRate);
+    if(x !="stop") setTimeout(function() {fade()},fadeRate);
     c.beginPath();
     c.fillStyle = "rgba(255,255,255,0.1)";	
     c.fillRect(0,0,w,h);
