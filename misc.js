@@ -1,3 +1,10 @@
+function semitones(x) {
+    // converts speed factor to semitones up/down
+    // i.e. speed of 2 becomes 12 semitones (up)
+    // speed of 0.5 becomes -12 semitones (down)
+    return Math.log(x)/Math.log(1.059466);
+}
+
 function loop (i,  delay, f) {
    setTimeout(function () {
 			//console.log(dt);

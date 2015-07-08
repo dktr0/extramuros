@@ -19,6 +19,15 @@ function setup() {
 	var data = JSON.parse(m.data);
 	if(data.type == 'osc') {
 	    var address = data.address.substring(1);
+	    // Tidal-specific double-mappings for incoming /play messages
+	    if(address == "play") {
+		data.args.name = data.args[1];
+		data.args.begin = data.args[3];
+		data.args.end = data.args[4];
+		data.args.speed = data.args[5];
+		data.args.pan = data.args[6];
+		data.args.gain = data.args[14];
+	    }
 	    $(osc).trigger(address);
 	    eval( address + "(data.args)");
 	    // ummm... we should check to make sure the function exists first!...
