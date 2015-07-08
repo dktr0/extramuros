@@ -17,15 +17,7 @@ function setup() {
 	eval( address + "(data.args)");
 	// ummm... we should check to make sure the function exists first!...
     };
-    openEditor('edit1');
-    openEditor('edit2');
-    openEditor('edit3');
-    openEditor('edit4');
-    openEditor('edit5');
-    openEditor('edit6');
-    openEditor('edit7');
-    openEditor('edit8');
-    openEditor('edit9');
+    for(var x=1;x<=20;x++) openEditor('edit' + x.toString());
     openEditor('chat');
     setupKeyboardHandlers();
     setupVisuals();
