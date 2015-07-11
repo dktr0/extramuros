@@ -59,7 +59,6 @@ wss.on('connection',function(ws) {
 	ws.send(JSON.stringify(n));
     };
     udp.addListener("message",udpListener);
-    // handle evaluation requests from browsers
     ws.on("message",function(m) {
 	var n = JSON.parse(m);
 	if(n.request == "eval") {
@@ -72,14 +71,17 @@ wss.on('connection',function(ws) {
 		evaluateJavaScriptGlobally(n.code);
 	    }
 	}
+	if(n.request == "oscFromClient") {
+	    if(n.password == password) {
+		forwardOscFromClient(n.address,n.args);
+	    }
+	}
     });
     ws.on("close",function(code,msg) {
 	console.log("");
 	udp.removeListener("message",udpListener);
     });
 });
-
-
 
 udp.open();
 
@@ -92,6 +94,11 @@ function evaluateBuffer(name) {
 
 function evaluateJavaScriptGlobally(code) {
     var n = { 'type': 'js', 'code': code };
+    wss.broadcast(JSON.stringify(n));
+}
+
+function forwardOscFromClient(address,args) {
+    var n = { 'type': 'osc', 'address': address, 'args': args };
     wss.broadcast(JSON.stringify(n));
 }
 

@@ -4,82 +4,82 @@ import Sound.Tidal.Context
 
 let vis = dirt {timestamp = NoStamp, latency = 0.04}
 
-vs1 <- stream "127.0.0.1" 7772 vis
+vs1 <- stream "127.0.0.1" 8000 vis
 ds1 <- dirtStream
 let d1 p = vs1 p >> ds1 p
 
-vs2 <- stream "127.0.0.1" 7772 vis
+vs2 <- stream "127.0.0.1" 8000 vis
 ds2 <- dirtStream
 let d2 p = vs2 p >> ds2 p
 
-vs3 <- stream "127.0.0.1" 7772 vis
+vs3 <- stream "127.0.0.1" 8000 vis
 ds3 <- dirtStream
 let d3 p = vs3 p >> ds3 p
 
-vs4 <- stream "127.0.0.1" 7772 vis
+vs4 <- stream "127.0.0.1" 8000 vis
 ds4 <- dirtStream
 let d4 p = vs4 p >> ds4 p
 
-vs5 <- stream "127.0.0.1" 7772 vis
+vs5 <- stream "127.0.0.1" 8000 vis
 ds5 <- dirtStream
 let d5 p = vs5 p >> ds5 p
 
-vs6 <- stream "127.0.0.1" 7772 vis
+vs6 <- stream "127.0.0.1" 8000 vis
 ds6 <- dirtStream
 let d6 p = vs6 p >> ds6 p
 
-vs7 <- stream "127.0.0.1" 7772 vis
+vs7 <- stream "127.0.0.1" 8000 vis
 ds7 <- dirtStream
 let d7 p = vs7 p >> ds7 p
 
-vs8 <- stream "127.0.0.1" 7772 vis
+vs8 <- stream "127.0.0.1" 8000 vis
 ds8 <- dirtStream
 let d8 p = vs8 p >> ds8 p
 
-vs9 <- stream "127.0.0.1" 7772 vis
+vs9 <- stream "127.0.0.1" 8000 vis
 ds9 <- dirtStream
 let d9 p = vs9 p >> ds9 p
 
-vs10 <- stream "127.0.0.1" 7772 vis
+vs10 <- stream "127.0.0.1" 8000 vis
 ds10 <- dirtStream
 let d10 p = vs10 p >> ds10 p
 
-vs11 <- stream "127.0.0.1" 7772 vis
+vs11 <- stream "127.0.0.1" 8000 vis
 ds11 <- dirtStream
 let d11 p = vs11 p >> ds11 p
 
-vs12 <- stream "127.0.0.1" 7772 vis
+vs12 <- stream "127.0.0.1" 8000 vis
 ds12 <- dirtStream
 let d12 p = vs12 p >> ds12 p
 
-vs13 <- stream "127.0.0.1" 7772 vis
+vs13 <- stream "127.0.0.1" 8000 vis
 ds13 <- dirtStream
 let d13 p = vs13 p >> ds13 p
 
-vs14 <- stream "127.0.0.1" 7772 vis
+vs14 <- stream "127.0.0.1" 8000 vis
 ds14 <- dirtStream
 let d14 p = vs14 p >> ds14 p
 
-vs15 <- stream "127.0.0.1" 7772 vis
+vs15 <- stream "127.0.0.1" 8000 vis
 ds15 <- dirtStream
 let d15 p = vs15 p >> ds15 p
 
-vs16 <- stream "127.0.0.1" 7772 vis
+vs16 <- stream "127.0.0.1" 8000 vis
 ds16 <- dirtStream
 let d16 p = vs16 p >> ds16 p
 
-vs17 <- stream "127.0.0.1" 7772 vis
+vs17 <- stream "127.0.0.1" 8000 vis
 ds17 <- dirtStream
 let d17 p = vs17 p >> ds17 p
 
-vs18 <- stream "127.0.0.1" 7772 vis
+vs18 <- stream "127.0.0.1" 8000 vis
 ds18 <- dirtStream
 let d18 p = vs18 p >> ds18 p
 
-vs19 <- stream "127.0.0.1" 7772 vis
+vs19 <- stream "127.0.0.1" 8000 vis
 ds19 <- dirtStream
 let d19 p = vs19 p >> ds19 p
 
-vs20 <- stream "127.0.0.1" 7772 vis
+vs20 <- stream "127.0.0.1" 8000 vis
 ds20 <- dirtStream
 let d20 p = vs20 p >> ds20 p
