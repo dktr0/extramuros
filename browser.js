@@ -36,7 +36,9 @@ function setup() {
 	    eval(data.code);
 	}
 	if(data.type == 'feedback') {
-	    console.log(data.text);
+	    // console.log(data.text);
+	    var oldText = $('#feedback').val();
+	    $('#feedback').val(oldText+data.text);
 	}
     };
     for(var x=1;x<=20;x++) openEditor('edit' + x.toString());

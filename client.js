@@ -1,5 +1,3 @@
-
-
 // our required dependencies
 var spawn = require('child_process').spawn;
 var stderr = process.stderr;
@@ -10,7 +8,7 @@ var osc = require('osc');
 
 // some global variables
 var output = process.stdin;
-var feedBackSource = process.stdout; 
+var feedBackSource = process.stdin; 
 
 // parse command-line options
 var knownOpts = { 
@@ -85,11 +83,11 @@ if(parsed['tidal']!=null) {
     tidal.on('close', function (code) {
 	console.log('Tidal process exited with code ' + code);
     });
-    tidal.stderr.on('data',function(data) {
-	stderr.write(data);
-    });
+    //tidal.stderr.on('data',function(data) {
+//	stderr.write(data);
+  //  });
     output = tidal.stdin;
-    feedbackSource = tidal.stdout;
+    feedbackSource = tidal.stderr;
 }
 
 // connection #1: messages on 0mq socket from server to stdout (to be piped into a live coding language)
@@ -135,16 +133,20 @@ if(wsAddress != null) {
 	    udp.open();
 	}
 	if(feedback != null) {
-	    feedbackSource.on("data",function (d) {
-		var n = {
-		    'request': 'feedback',
-		    'password' : password,
-		    'text': d.toString()
-		};
-		ws.send(JSON.stringify(n));
-	    });
+	    if(tidal != null) {
+		feedbackFunction = function(d) {
+		    var n = {
+			'request': 'feedback',
+			'password' : password,
+			'text': d.toString()
+		    };
+		    ws.send(JSON.stringify(n));
+		}
+		tidal.stdout.on("data",feedbackFunction);
+		tidal.stderr.on("data",feedbackFunction);
+	    }
 	}
     });
 }
 
-process.on('SIGINT', function() { sub.close(); } );
+process.on('SIGINT', function() { sub.close(); ws.close(); } );
