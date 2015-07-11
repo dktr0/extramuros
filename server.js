@@ -76,6 +76,11 @@ wss.on('connection',function(ws) {
 		forwardOscFromClient(n.address,n.args);
 	    }
 	}
+	if(n.request == "feedback") {
+	    if(n.password == password) {
+		forwardFeedbackFromClient(n.text);
+	    }
+	}
     });
     ws.on("close",function(code,msg) {
 	console.log("");
@@ -99,6 +104,11 @@ function evaluateJavaScriptGlobally(code) {
 
 function forwardOscFromClient(address,args) {
     var n = { 'type': 'osc', 'address': address, 'args': args };
+    wss.broadcast(JSON.stringify(n));
+}
+
+function forwardFeedbackFromClient(text) {
+    var n = { 'type': 'feedback', 'text': text };
     wss.broadcast(JSON.stringify(n));
 }
 

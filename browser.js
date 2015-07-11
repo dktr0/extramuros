@@ -35,6 +35,9 @@ function setup() {
 	if(data.type == 'js') {
 	    eval(data.code);
 	}
+	if(data.type == 'feedback') {
+	    console.log(data.text);
+	}
     };
     for(var x=1;x<=20;x++) openEditor('edit' + x.toString());
     openEditor('chat');
