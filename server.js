@@ -139,7 +139,7 @@ wss.on('connection',function(ws) {
     });
     ws.on("close",function(code,msg) {
 	console.log("");
-	udp.removeListener("message",udpListener);
+	if(udp!=null)udp.removeListener("message",udpListener);
     });
 });
 

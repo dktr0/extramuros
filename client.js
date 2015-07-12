@@ -110,40 +110,61 @@ sub.subscribe('');
 
 // connection #2: (optionally) OSC messages received via UDP are forwarded to server on a WebSocket 
 // connection #3: (optionally) feedback from stdin is forwarded to server on a WebSocket
-if(wsAddress != null) {
-    stderr.write("extramuros: connecting to " + wsAddress + "\n");
+
+var connectWs = function() {
+    stderr.write("extramuros: connecting to " + wsAddress + "...\n");
     var ws = new WebSocket(wsAddress);
-    var udp;
+    var udp,oscFunction,feedbackFunction;
+    oscFunction = function(m) {
+	var n = {
+	    'request': 'oscFromClient',
+	    'password' : password,
+	    'address': m.address,
+	    'args': m.args
+	};
+	try { ws.send(JSON.stringify(n)); } 
+	catch(e) {
+	    stderr.write("warning: exception in WebSocket send\n");
+	}
+    }
+    feedbackFunction = function(m) {
+	var n = {
+	    'request': 'feedback',
+	    'password' : password,
+	    'text': m.toString()
+	};
+	try { ws.send(JSON.stringify(n)); }
+	catch(e) {
+	    stderr.write("warning: exception in WebSocket send\n");
+	}
+    }
     ws.on('open',function() {
 	stderr.write("extramuros: webSocket connection " + wsAddress + " opened\n");
 	if(oscPort !=null) {
 	    udp = new osc.UDPPort( { localAddress: "0.0.0.0",localPort: oscPort});
-	    udp.on('message',function(m) {
-		var n = {
-		    'request': 'oscFromClient',
-		    'password' : password,
-		    'address': m.address,
-		    'args': m.args
-		};
-		ws.send(JSON.stringify(n));
-	    });
+	    udp.on("message",oscFunction);
 	    udp.open();
 	}
 	if(feedback != null) {
 	    if(tidal != null) {
-		feedbackFunction = function(d) {
-		    var n = {
-			'request': 'feedback',
-			'password' : password,
-			'text': d.toString()
-		    };
-		    ws.send(JSON.stringify(n));
-		}
-		tidal.stdout.on("data",feedbackFunction);
-		tidal.stderr.on("data",feedbackFunction);
+		tidal.stdout.addListener("data",feedbackFunction);
+		tidal.stderr.addListener("data",feedbackFunction);
 	    }
 	}
     });
-}
+    ws.on('close',function() {
+	stderr.write("extramuros: websocket connection " + wsAddress + " closed\n");
+	if(oscPort!=null)udp.close();
+	if(feedback!=null) {
+	    tidal.stdout.removeListener("data",feedbackFunction);
+	    tidal.stderr.removeListener("data",feedbackFunction);
+	}
+	setTimeout(connectWs,5000);
+    });
+    ws.on('error',function() {
+	setTimeout(connectWs,5000);
+    });
+};
+if(wsAddress != null) connectWs();
 
 process.on('SIGINT', function() { sub.close(); ws.close(); } );
