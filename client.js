@@ -19,8 +19,8 @@ var knownOpts = {
     "password" : [String, null],
     "help": Boolean,
     "feedback": Boolean,
-    "tidal": Boolean
-    "newlines-as-spaces" : Boolean,
+    "tidal": Boolean,
+    "newlines-as-spaces" : Boolean
 };
 
 var shortHands = {
@@ -40,7 +40,7 @@ if(parsed['help']!=null) {
     stderr.write("extramuros client.js usage:\n");
     stderr.write(" --help (-h)               this help message\n");
     stderr.write(" --server (-s) [address]   address of server's downstream (default:localhost)\n");
-    stderr.write(" --zmq-port (-z) [number]      TCP port on which to connect to server (default: 8001)\n");
+    stderr.write(" --zmq-port (-z) [number]  TCP port on which to connect to server (default: 8001)\n");
     stderr.write(" --ws-port [number]        port for OSC WebSocket connection to server (default: 8002)\n");
     stderr.write(" --osc-port [number]       UDP port on which to receive OSC messages (default: none)\n");
     stderr.write(" --password [word] (-p)    password to authenticate messages to server\n");
