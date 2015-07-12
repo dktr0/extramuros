@@ -38,13 +38,19 @@ c.strokeStyle = "red";
 c.stroke; 
 
 VI. Text
-
+To draw text to the screen we need to define the text and it's position.
 c.fillText("Hello World", w/2, h/2); 
+
+To change the size and font of the text as well as center it, as in the case above the "H" of "Hello" is centered, we add
+c.font = "100px Arial";   // to change the size we need to include a font type - in this case "Arial"
+c.textAlign = "center"; 
+c.fillText("Hello World", w/2, h/2); // 
+
 
 evaluate: control+enter 
 shared evaluation: control+shift+enter
-retick: control+
-clear screen: 
+retick: option+r; 
+clear screen: option+c
 
 
 
