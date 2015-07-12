@@ -13,23 +13,23 @@ var feedBackSource = process.stdin;
 // parse command-line options
 var knownOpts = { 
     "server" : [String, null],
-    "port" : [Number, null],
-    "newlines-as-spaces" : Boolean,
+    "zmq-port" : [Number, null],
     "osc-port" : [Number, null],
     "ws-port" : [Number, null],
     "password" : [String, null],
     "help": Boolean,
     "feedback": Boolean,
     "tidal": Boolean
+    "newlines-as-spaces" : Boolean,
 };
 
 var shortHands = {
     "s" : ["--server"],
-    "p" : ["--port"],
+    "z" : ["--zmq-port"],
     "n" : ["--newlines-as-spaces"],
     "o" : ["--osc-port"],
     "w" : ["--ws-port"],
-    "d" : ["--password"],
+    "p" : ["--password"],
     "h" : ["--help"],
     "f" : ["--feedback"]
 };
@@ -40,13 +40,13 @@ if(parsed['help']!=null) {
     stderr.write("extramuros client.js usage:\n");
     stderr.write(" --help (-h)               this help message\n");
     stderr.write(" --server (-s) [address]   address of server's downstream (default:localhost)\n");
-    stderr.write(" --port (-p) [number]      TCP port on which to connect to server (default: 8001)\n");
-    stderr.write(" --newlines-as-spaces (-n) converts any received newlines to spaces on stdout\n");
-    stderr.write(" --osc-port [number]       UDP port on which to receive OSC messages (default: none)\n");
+    stderr.write(" --zmq-port (-z) [number]      TCP port on which to connect to server (default: 8001)\n");
     stderr.write(" --ws-port [number]        port for OSC WebSocket connection to server (default: 8002)\n");
-    stderr.write(" --password [word] (-d)    password to authenticate messages to server\n");
+    stderr.write(" --osc-port [number]       UDP port on which to receive OSC messages (default: none)\n");
+    stderr.write(" --password [word] (-p)    password to authenticate messages to server\n");
     stderr.write(" --feedback (-f)           send feedback from stdin to server\n");
     stderr.write(" --tidal                   launch Tidal (ghci) and use its stdout as feedback\n");
+    stderr.write(" --newlines-as-spaces (-n) converts any received newlines to spaces on stdout\n");
     process.exit(1);
 }
 
@@ -58,7 +58,7 @@ if(process.argv.length<3) {
 var newlines = parsed['newlines-as-spaces'];
 var server = parsed['server'];
 if(server == null) { server = "localhost"; }
-var port = parsed['port'];
+var port = parsed['zmq-port'];
 if(port == null) { port = 8001; }
 var oscPort = parsed['osc-port'];
 var wsPort = parsed['ws-port'];
