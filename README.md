@@ -10,7 +10,7 @@ The connections between the web browsers, the server, and the client are structu
 To launch a server (only one person in a collaborative performance group needs to do this) - and assuming extramuros has been cloned/downloaded to your user folder:
 ```
 cd ~/extramuros
-node server.js insertFunnyPasswordHere
+node server.js --password insertFunnyPasswordHere
 ```
 
 To verify that the server is running, point your browser to the IP address of the server and port 8000.  If the server is not running on your local machine, replace 127.0.0.1 with the actual address of the server in the following (and in all subsequent examples):
@@ -43,13 +43,44 @@ You can also use short options, in which case the last line of the preceding exa
 node ~/extramuros/client.js -s 127.0.0.1 -n | ./sclang
 ```
 
-For Tidal, one strategy is to pipe the text to GHCI and use the provided .ghci file in the extramuros folder to initialize Tidal.  Note that for this to work you must be in the extramuros project folder (so that ghci can find the .ghci file that came with your extramuros download):
+You can send arbitrary OSC messages to the client and they will arrive at all browsers as calls to JavaScript functions with the same name as the OSC address (i.e. "/amp 0.5" becomes the call amp(0.5);). To activate this function on the client use the osc-port option AND specify the password (anything that sends things to the server needs a password!):
 ```
 cd ~/extramuros
-node client.js -s 127.0.0.1 | ghci -XOverloadedStrings
+node client.js --server 127.0.0.1 --osc-port 8000 --password yourFunnyPasswordHere| ./sclang
 ```
 
-Now in the web browser, enter some code, make sure you have entered the correct password, and click "eval".  Not only should you see the evaluated code in the terminal - hopefully you will also hear it's effect!  Note: All of this is rough, unfriendly and probably even mistaken in some cases. So let's all help make it better!...
+Another command-line option launches Tidal as a sub-process of the client.  Note that the extramuros distribution includes a file .ghci which helps establish a useful working environment for Tidal, and that because of this you should probably be in the extramuros folder when you start the client for Tidal:
+```
+cd ~/extramuros
+node client.js --server 127.0.0.1 --tidal
+```
+
+In addition to being more convenient than the command-line pipes used above with SuperCollider, this option also allows for feedback from a client to reach the server and thus be displayed in the browser windows:
+```
+cd ~/extramuros
+node client.js --server 127.0.0.1 --tidal --feedback
+```
+
+To really get cooking with extramuros and Tidal, activate the osc-port option as well.  You'll have feedback from the ghci/Tidal interpreter AND the browser will receive JavaScript function calls when Tidal notes/events happen:
+```
+cd ~/extramuros
+node client.js --server 127.0.0.1 --tidal --feedback --osc-port 8000 --password yourFunnyPassword
+```
+
+Now in the web browser, enter some code, make sure you have entered the correct password, and click "eval".  Not only should you see the evaluated code in the terminal - hopefully you will also hear it's effect!  
+
+There are a number of keyboard short cuts:
+- Shift-Enter: evaluate code through the server (i.e. Tidal or SuperCollider code)
+- Ctrl-Shift-Enter: evaluate JavaScript code on all browsers 
+- Ctrl-Enter: evaluate JavaScript code on only this browser
+- Ctrl-Shift-C: clear the JavaScript canvas on all browsers
+- Alt-C: clear the JavaScript canvas on this browser only
+- Ctrl-Shift-R: restart animation if it has crashed, on all browsers
+- Alt-R: restart animation it it has crashed, on this browser only
+
+For more information about JavaScript visuals/animation in extramuros, see the document visualizationexamples.md.
+
+All of this is rough, unfriendly and probably even mistaken in some cases. So let's all help make it better!...
 
 -d0kt0r0 (aka David Ogborn)
 
