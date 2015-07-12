@@ -20,14 +20,14 @@ function loop (i,  delay, f) {
 var fadeCondition = 0; 
 // Determine if fade function has already been evaluated
 var fade = function(x){
-	if(funct.fade !== "on") {
-// 		console.log("turning funct.fade to on"); 
-		if (x == "stop") {fadeCondition=1; delete funct.fade}
+	if(funct.fade !== 0) {
+		if (x == "stop") {fadeCondition=1; console.log("fade not running")}
 		else {
-			funct.fade = "on"; 
+			console.log("turning funct.fade to on"); 	
+			funct.fade = 0; 
 			fadeCondition=0; 
 			if(x !== null) {fadeRate = x;}; 
-			fade0(); // call fade function
+			fader(); // call fade function
 			console.log('fading :'+ fadeRate + " ms"); 
 		} 
 		} else {
@@ -38,19 +38,19 @@ var fade = function(x){
 	
 }; 
 /// Fade function -- has its own setTimeout function such that the fadeRate can be modified
-var fade0 = function(){
+var fader = function(){
 	if(fadeCondition == 0) {
 // 		console.log('fade0'); 
-		canv.gcanvas.beginPath();
-		canv.gcanvas.fillStyle = "rgba(255,255,255,0.1)";	
-		canv.gcanvas.fillRect(0,0,dimensions.gx, dimensions.gy);
-		canv.gcanvas.closePath(); 	
-		setTimeout(function(){fade0()}, fadeRate); 
+		c.beginPath();
+		c.fillStyle = "rgba(0,0,0,0.1)";	
+		c.fillRect(0,0,w, h);
+		c.closePath(); 	
+		setTimeout(function(){fader()}, fadeRate); 
 		} else {
 		console.log('fading stopped'); 
-		canv.gcanvas.beginPath();
-		canv.gcanvas.fillStyle = "rgba(255,255,255,0.1)";	
-		canv.gcanvas.fillRect(0,0,dimensions.gx, dimensions.gy);
-		canv.gcanvas.closePath();
+		c.beginPath();
+		c.fillStyle = "rgba(255,255,255,0.1)";	
+		c.fillRect(0,0,w, h);
+		c.closePath();
 		}
 };

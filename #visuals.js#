@@ -1,4 +1,4 @@
-var i = {}; 
+OAvar i = {}; 
 var funct={}; 
 var fadeRate = 100; 
 
@@ -14,8 +14,6 @@ function setupVisuals() {
     $('#global').css({zIndex: $('canvas').length + 3});
     adjustCanvasDimensions();
     c = document.getElementById('gcanvas').getContext('2d');
-    c.fillStyle = "white"; 
-    c.strokeStyle = "white"; 
     // and activate our animation callback function 'tick'
     requestAnimationFrame(tick); // activate our animation callback function 'tick'
     console.log('visuals are set');
