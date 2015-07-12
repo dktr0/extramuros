@@ -81,11 +81,8 @@ var tidal;
 if(parsed['tidal']!=null) {
     tidal = spawn('ghci', ['-XOverloadedStrings']);
     tidal.on('close', function (code) {
-	console.log('Tidal process exited with code ' + code);
+	stderr.write('Tidal process exited with code ' + code + "\n");
     });
-    //tidal.stderr.on('data',function(data) {
-//	stderr.write(data);
-  //  });
     output = tidal.stdin;
     feedbackSource = tidal.stderr;
 }
@@ -118,7 +115,7 @@ if(wsAddress != null) {
     var ws = new WebSocket(wsAddress);
     var udp;
     ws.on('open',function() {
-	stderr.write("extramuros: webSocket connection " + wsAddress + " opened");
+	stderr.write("extramuros: webSocket connection " + wsAddress + " opened\n");
 	if(oscPort !=null) {
 	    udp = new osc.UDPPort( { localAddress: "0.0.0.0",localPort: oscPort});
 	    udp.on('message',function(m) {

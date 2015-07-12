@@ -37,19 +37,31 @@ function setup() {
 	}
 	if(data.type == 'feedback') {
 	    // console.log(data.text);
-	    var oldText = $('#feedback').val();
-	    $('#feedback').val(oldText+data.text);
+	    var fb = $('#feedback');
+	    fb.val(fb.val()+data.text);
+	    fb.scrollTop(fb[0].scrollHeight);
 	}
     };
     for(var x=1;x<=20;x++) openEditor('edit' + x.toString());
-    openEditor('chat');
+//    setupFeedback();
     setupKeyboardHandlers();
     setupVisuals();
 }
 
+function setupFeedback() {
+    $("#feedback").change(function() {
+	console.log("feedback changed");
+	$(this).scrollTop($(this)[0].scrollHeight);
+    });
+}
+
+function scrollToBottom() {
+   $('#object').scrollTop($('#object')[0].scrollHeight);
+}
+
 function getPassword() {
     var x = document.getElementById('password').value;
-    if(x == null || password == "") {
+    if(x == null || x == "") {
 	alert("You must enter a password to evaluate code.");
 	return null;
     }
@@ -124,6 +136,5 @@ function setupKeyboardHandlers() {
 	    event.preventDefault();
 	    evaluateJavaScriptGlobally("retick();");
 	}
-
     });
 }
