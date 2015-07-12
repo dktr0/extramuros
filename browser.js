@@ -36,28 +36,18 @@ function setup() {
 	    eval(data.code);
 	}
 	if(data.type == 'feedback') {
-	    // console.log(data.text);
 	    var fb = $('#feedback');
-	    fb.val(fb.val()+data.text);
+	    var oldText = fb.val();
+	    if(oldText.length > 10000) oldText = ""; // short-term solution...
+	    fb.val(oldText+data.text);
 	    fb.scrollTop(fb[0].scrollHeight);
 	}
     };
     for(var x=1;x<=20;x++) openEditor('edit' + x.toString());
-//    setupFeedback();
     setupKeyboardHandlers();
     setupVisuals();
 }
 
-function setupFeedback() {
-    $("#feedback").change(function() {
-	console.log("feedback changed");
-	$(this).scrollTop($(this)[0].scrollHeight);
-    });
-}
-
-function scrollToBottom() {
-   $('#object').scrollTop($('#object')[0].scrollHeight);
-}
 
 function getPassword() {
     var x = document.getElementById('password').value;
