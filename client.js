@@ -1,12 +1,12 @@
 // our required dependencies
 var spawn = require('child_process').spawn;
-var stderr = process.stderr;
 var nopt = require('nopt');
 var zmq = require('zmq');
 var WebSocket = require('ws');
 var osc = require('osc');
 
 // some global variables
+var stderr = process.stderr;
 var output = process.stdin;
 var feedBackSource = process.stdin; 
 
@@ -37,7 +37,7 @@ var shortHands = {
 var parsed = nopt(knownOpts,shortHands,process.argv,2);
 
 if(parsed['help']!=null) {
-    stderr.write("extramuros usage:\n");
+    stderr.write("extramuros client.js usage:\n");
     stderr.write(" --help (-h)               this help message\n");
     stderr.write(" --server (-s) [address]   address of server's downstream (default:localhost)\n");
     stderr.write(" --port (-p) [number]      TCP port on which to connect to server (default: 8001)\n");
