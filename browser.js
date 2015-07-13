@@ -27,6 +27,7 @@ function setup() {
 		data.args.speed = data.args[5];
 		data.args.pan = data.args[6];
 		data.args.gain = data.args[14];
+		// full list of parameters at bottom
 	    }
 	    $(osc).trigger(address);
 	    eval( address + "(data.args)");
@@ -128,3 +129,33 @@ function setupKeyboardHandlers() {
 	}
     });
 }
+
+// path = "/play",
+// params = [  
+//1// S "sound" Nothing,     
+//2// F "offset" (Just 0),   
+//3// F "begin" (Just 0),     
+//4// F "end" (Just 1),      
+//5// F "speed" (Just 1),       
+//6// F "pan" (Just 0.5),     
+//7// F "velocity" (Just 0),
+//8// S "vowel" (Just ""),
+//9// F "cutoff" (Just 0),
+//10// F "resonance" (Just 0),
+//11// F "accelerate" (Just 0),
+//12// F "shape" (Just 0),
+//13// I "kriole" (Just 0),
+//14// F "gain" (Just 1),
+//15// I "cut" (Just (0)),
+//16// F "delay" (Just (0)),
+//17// F "delaytime" (Just (-1)),
+//18// F "delayfeedback" (Just (-1)),
+//19// F "crush" (Just 0),
+//20// I "coarse" (Just 0),
+//21// F "hcutoff" (Just 0),
+//22// F "hresonance" (Just 0),
+//23// F "bandf" (Just 0),
+//24// F "bandq" (Just 0),
+//25// S "unit" (Just "rate"),
+//26// I "loop" (Just 1)
+// ]

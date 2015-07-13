@@ -54,3 +54,7 @@ var fader = function(){
 		c.closePath();
 		}
 };
+
+var rgb = function(r,g,b) {
+return ("rgb(" + Math.floor(r) + "," + Math.floor(g) + "," + Math.floor(b) + ")");
+}; 
