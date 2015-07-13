@@ -111,7 +111,8 @@ wss.on('connection',function(ws) {
 	    'address': m.address,
 	    'args': m.args
 	};
-	ws.send(JSON.stringify(n));
+	try { ws.send(JSON.stringify(n)); }
+	catch(e) { stderr.write("warning: exception in WebSocket send\n"); }
     };
     if(udp!=null) udp.addListener("message",udpListener);
     ws.on("message",function(m) {
@@ -154,17 +155,20 @@ function evaluateBuffer(name) {
 
 function evaluateJavaScriptGlobally(code) {
     var n = { 'type': 'js', 'code': code };
-    wss.broadcast(JSON.stringify(n));
+    try { wss.broadcast(JSON.stringify(n)); }
+    catch(e) { stderr.write("warning: exception in WebSocket broadcast\n"); }
 }
 
 function forwardOscFromClient(address,args) {
     var n = { 'type': 'osc', 'address': address, 'args': args };
-    wss.broadcast(JSON.stringify(n));
+    try { wss.broadcast(JSON.stringify(n)); }
+    catch(e) { stderr.write("warning: exception in WebSocket broadcast\n"); }
 }
 
 function forwardFeedbackFromClient(text) {
     var n = { 'type': 'feedback', 'text': text };
-    wss.broadcast(JSON.stringify(n));
+    try { wss.broadcast(JSON.stringify(n)); }
+    catch(e) { stderr.write("warning: exception in WebSocket broadcast\n"); }
 }
 
 var shareserver = sharejs.server.attach(server, options);
