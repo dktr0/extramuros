@@ -5,81 +5,184 @@ import Sound.Tidal.Context
 let vis = dirt {timestamp = NoStamp, latency = 0.04}
 
 vs1 <- stream "127.0.0.1" 8000 vis
-ds1 <- dirtStream
-let d1 p = vs1 p >> ds1 p
-
 vs2 <- stream "127.0.0.1" 8000 vis
-ds2 <- dirtStream
-let d2 p = vs2 p >> ds2 p
-
 vs3 <- stream "127.0.0.1" 8000 vis
-ds3 <- dirtStream
-let d3 p = vs3 p >> ds3 p
-
 vs4 <- stream "127.0.0.1" 8000 vis
-ds4 <- dirtStream
-let d4 p = vs4 p >> ds4 p
-
 vs5 <- stream "127.0.0.1" 8000 vis
-ds5 <- dirtStream
-let d5 p = vs5 p >> ds5 p
-
 vs6 <- stream "127.0.0.1" 8000 vis
-ds6 <- dirtStream
-let d6 p = vs6 p >> ds6 p
-
 vs7 <- stream "127.0.0.1" 8000 vis
-ds7 <- dirtStream
-let d7 p = vs7 p >> ds7 p
-
 vs8 <- stream "127.0.0.1" 8000 vis
-ds8 <- dirtStream
-let d8 p = vs8 p >> ds8 p
-
 vs9 <- stream "127.0.0.1" 8000 vis
-ds9 <- dirtStream
-let d9 p = vs9 p >> ds9 p
-
 vs10 <- stream "127.0.0.1" 8000 vis
-ds10 <- dirtStream
-let d10 p = vs10 p >> ds10 p
-
 vs11 <- stream "127.0.0.1" 8000 vis
-ds11 <- dirtStream
-let d11 p = vs11 p >> ds11 p
-
 vs12 <- stream "127.0.0.1" 8000 vis
-ds12 <- dirtStream
-let d12 p = vs12 p >> ds12 p
-
 vs13 <- stream "127.0.0.1" 8000 vis
-ds13 <- dirtStream
-let d13 p = vs13 p >> ds13 p
-
 vs14 <- stream "127.0.0.1" 8000 vis
-ds14 <- dirtStream
-let d14 p = vs14 p >> ds14 p
-
 vs15 <- stream "127.0.0.1" 8000 vis
-ds15 <- dirtStream
-let d15 p = vs15 p >> ds15 p
-
 vs16 <- stream "127.0.0.1" 8000 vis
-ds16 <- dirtStream
-let d16 p = vs16 p >> ds16 p
-
 vs17 <- stream "127.0.0.1" 8000 vis
-ds17 <- dirtStream
-let d17 p = vs17 p >> ds17 p
-
 vs18 <- stream "127.0.0.1" 8000 vis
-ds18 <- dirtStream
-let d18 p = vs18 p >> ds18 p
-
 vs19 <- stream "127.0.0.1" 8000 vis
-ds19 <- dirtStream
-let d19 p = vs19 p >> ds19 p
-
 vs20 <- stream "127.0.0.1" 8000 vis
+vs21 <- stream "127.0.0.1" 8000 vis
+vs22 <- stream "127.0.0.1" 8000 vis
+vs23 <- stream "127.0.0.1" 8000 vis
+vs24 <- stream "127.0.0.1" 8000 vis
+vs25 <- stream "127.0.0.1" 8000 vis
+vs26 <- stream "127.0.0.1" 8000 vis
+vs27 <- stream "127.0.0.1" 8000 vis
+vs28 <- stream "127.0.0.1" 8000 vis
+vs29 <- stream "127.0.0.1" 8000 vis
+vs30 <- stream "127.0.0.1" 8000 vis
+vs31 <- stream "127.0.0.1" 8000 vis
+vs32 <- stream "127.0.0.1" 8000 vis
+vs33 <- stream "127.0.0.1" 8000 vis
+vs34 <- stream "127.0.0.1" 8000 vis
+vs35 <- stream "127.0.0.1" 8000 vis
+vs36 <- stream "127.0.0.1" 8000 vis
+vs37 <- stream "127.0.0.1" 8000 vis
+vs38 <- stream "127.0.0.1" 8000 vis
+vs39 <- stream "127.0.0.1" 8000 vis
+vs40 <- stream "127.0.0.1" 8000 vis
+vs41 <- stream "127.0.0.1" 8000 vis
+vs42 <- stream "127.0.0.1" 8000 vis
+vs43 <- stream "127.0.0.1" 8000 vis
+vs44 <- stream "127.0.0.1" 8000 vis
+vs45 <- stream "127.0.0.1" 8000 vis
+vs46 <- stream "127.0.0.1" 8000 vis
+vs47 <- stream "127.0.0.1" 8000 vis
+vs48 <- stream "127.0.0.1" 8000 vis
+vs49 <- stream "127.0.0.1" 8000 vis
+vs50 <- stream "127.0.0.1" 8000 vis
+vs51 <- stream "127.0.0.1" 8000 vis
+vs52 <- stream "127.0.0.1" 8000 vis
+vs53 <- stream "127.0.0.1" 8000 vis
+vs54 <- stream "127.0.0.1" 8000 vis
+vs55 <- stream "127.0.0.1" 8000 vis
+vs56 <- stream "127.0.0.1" 8000 vis
+vs57 <- stream "127.0.0.1" 8000 vis
+vs58 <- stream "127.0.0.1" 8000 vis
+vs59 <- stream "127.0.0.1" 8000 vis
+vs60 <- stream "127.0.0.1" 8000 vis
+
+ds1 <- dirtStream 
+ds2 <- dirtStream 
+ds3 <- dirtStream 
+ds4 <- dirtStream 
+ds5 <- dirtStream 
+ds6 <- dirtStream 
+ds7 <- dirtStream 
+ds8 <- dirtStream 
+ds9 <- dirtStream 
+ds10 <- dirtStream 
+ds11 <- dirtStream 
+ds12 <- dirtStream 
+ds13 <- dirtStream 
+ds14 <- dirtStream 
+ds15 <- dirtStream 
+ds16 <- dirtStream 
+ds17 <- dirtStream 
+ds18 <- dirtStream 
+ds19 <- dirtStream 
 ds20 <- dirtStream
+ds21 <- dirtStream 
+ds22 <- dirtStream 
+ds23 <- dirtStream 
+ds24 <- dirtStream 
+ds25 <- dirtStream 
+ds26 <- dirtStream 
+ds27 <- dirtStream 
+ds28 <- dirtStream 
+ds29 <- dirtStream 
+ds30 <- dirtStream 
+ds31 <- dirtStream 
+ds32 <- dirtStream 
+ds33 <- dirtStream 
+ds34 <- dirtStream 
+ds35 <- dirtStream 
+ds36 <- dirtStream 
+ds37 <- dirtStream 
+ds38 <- dirtStream 
+ds39 <- dirtStream 
+ds40 <- dirtStream 
+ds41 <- dirtStream 
+ds42 <- dirtStream 
+ds43 <- dirtStream 
+ds44 <- dirtStream 
+ds45 <- dirtStream 
+ds46 <- dirtStream 
+ds47 <- dirtStream 
+ds48 <- dirtStream 
+ds49 <- dirtStream 
+ds50 <- dirtStream 
+ds51 <- dirtStream 
+ds52 <- dirtStream 
+ds53 <- dirtStream 
+ds54 <- dirtStream 
+ds55 <- dirtStream 
+ds56 <- dirtStream 
+ds57 <- dirtStream 
+ds58 <- dirtStream 
+ds59 <- dirtStream 
+ds60 <- dirtStream 
+
+let d1 p = vs1 p >> ds1 p
+let d2 p = vs2 p >> ds2 p
+let d3 p = vs3 p >> ds3 p
+let d4 p = vs4 p >> ds4 p
+let d5 p = vs5 p >> ds5 p
+let d6 p = vs6 p >> ds6 p
+let d7 p = vs7 p >> ds7 p
+let d8 p = vs8 p >> ds8 p
+let d9 p = vs9 p >> ds9 p 
+let d10 p = vs10 p >> ds10 p
+let d11 p = vs11 p >> ds11 p
+let d12 p = vs12 p >> ds12 p
+let d13 p = vs13 p >> ds13 p
+let d14 p = vs14 p >> ds14 p
+let d15 p = vs15 p >> ds15 p
+let d16 p = vs16 p >> ds16 p
+let d17 p = vs17 p >> ds17 p
+let d18 p = vs18 p >> ds18 p
+let d19 p = vs19 p >> ds19 p
 let d20 p = vs20 p >> ds20 p
+let d21 p = vs21 p >> ds21 p
+let d22 p = vs22 p >> ds22 p
+let d23 p = vs23 p >> ds23 p
+let d24 p = vs24 p >> ds24 p
+let d25 p = vs25 p >> ds25 p
+let d26 p = vs26 p >> ds26 p
+let d27 p = vs27 p >> ds27 p
+let d28 p = vs28 p >> ds28 p
+let d29 p = vs29 p >> ds29 p
+let d30 p = vs30 p >> ds30 p
+let d31 p = vs31 p >> ds31 p
+let d32 p = vs32 p >> ds32 p
+let d33 p = vs33 p >> ds33 p
+let d34 p = vs34 p >> ds34 p
+let d35 p = vs35 p >> ds35 p
+let d36 p = vs36 p >> ds36 p
+let d37 p = vs37 p >> ds37 p
+let d38 p = vs38 p >> ds38 p
+let d39 p = vs39 p >> ds39 p
+let d40 p = vs40 p >> ds40 p
+let d41 p = vs41 p >> ds41 p
+let d42 p = vs42 p >> ds42 p
+let d43 p = vs43 p >> ds43 p
+let d44 p = vs44 p >> ds44 p
+let d45 p = vs45 p >> ds45 p
+let d46 p = vs46 p >> ds46 p
+let d47 p = vs47 p >> ds47 p
+let d48 p = vs48 p >> ds48 p
+let d49 p = vs49 p >> ds49 p
+let d50 p = vs50 p >> ds50 p
+let d51 p = vs51 p >> ds51 p
+let d52 p = vs52 p >> ds52 p
+let d53 p = vs53 p >> ds53 p
+let d54 p = vs54 p >> ds54 p
+let d55 p = vs55 p >> ds55 p
+let d56 p = vs56 p >> ds56 p
+let d57 p = vs57 p >> ds57 p
+let d58 p = vs58 p >> ds58 p
+let d59 p = vs59 p >> ds59 p
+let d60 p = vs60 p >> ds60 p

@@ -4,7 +4,7 @@ function Osc() {}
 jQuery.extend(Osc.prototype,jQuery.eventEmitter);
 var osc = new Osc();
 
-function setup() {
+function setup(nEditors) {
     window.WebSocket = window.WebSocket || window.MozWebSocket;
     var url = 'ws://' + location.hostname + ':8002';
     console.log("attempting websocket connection to " + url);
@@ -44,7 +44,7 @@ function setup() {
 	    fb.scrollTop(fb[0].scrollHeight);
 	}
     };
-    for(var x=1;x<=20;x++) openEditor('edit' + x.toString());
+    for(var x=1;x<=nEditors;x++) openEditor('edit' + x.toString());
     setupKeyboardHandlers();
     setupVisuals();
 }
