@@ -4,14 +4,15 @@ var nopt = require('nopt');
 var zmq = require('zmq');
 var WebSocket = require('ws');
 var osc = require('osc');
+var fs = require('fs');
 
 // some global variables
 var stderr = process.stderr;
 var output = process.stdin;
-var feedBackSource = process.stdin; 
+var feedBackSource = process.stdin;
 
 // parse command-line options
-var knownOpts = { 
+var knownOpts = {
     "server" : [String, null],
     "zmq-port" : [Number, null],
     "osc-port" : [Number, null],
@@ -20,6 +21,7 @@ var knownOpts = {
     "help": Boolean,
     "feedback": Boolean,
     "tidal": Boolean,
+    "tidalVisuals": Boolean,
     "newlines-as-spaces" : Boolean
 };
 
@@ -46,6 +48,7 @@ if(parsed['help']!=null) {
     stderr.write(" --password [word] (-p)    password to authenticate messages to server\n");
     stderr.write(" --feedback (-f)           send feedback from stdin to server\n");
     stderr.write(" --tidal                   launch Tidal (ghci) and use its stdout as feedback\n");
+    stderr.write(" --tidalVisuals            launch Tidal (ghci) with .ghciVisuals\n");
     stderr.write(" --newlines-as-spaces (-n) converts any received newlines to spaces on stdout\n");
     process.exit(1);
 }
@@ -77,14 +80,26 @@ if(oscPort!=null && password == null) {
     process.exit(1);
 }
 
+var withTidal = parsed['tidal'];
+var withTidalVisuals = parsed['tidalVisuals'];
+if(withTidalVisuals!=null) { withTidal = true; }
+
 var tidal;
-if(parsed['tidal']!=null) {
+if(withTidal != null) {
     tidal = spawn('ghci', ['-XOverloadedStrings']);
     tidal.on('close', function (code) {
-	stderr.write('Tidal process exited with code ' + code + "\n");
+      stderr.write('Tidal process exited with code ' + code + "\n");
     });
     output = tidal.stdin;
     feedbackSource = tidal.stderr;
+    var dotGhci;
+    if(withTidalVisuals == null) { dotGhci = ".ghciNoVisuals"; }
+    else { dotGhci = ".ghciVisuals"; }
+    fs.readFile(dotGhci,'utf8', function (err,data) {
+      if (err) { console.log(err); return; }
+      tidal.stdin.write(data);
+      console.log("Tidal/GHCI initialized");
+    });
 }
 
 // connection #1: messages on 0mq socket from server to stdout (to be piped into a live coding language)
@@ -108,7 +123,7 @@ stderr.write("extramuros: subscribing to " + address + "\n");
 sub.connect(address);
 sub.subscribe('');
 
-// connection #2: (optionally) OSC messages received via UDP are forwarded to server on a WebSocket 
+// connection #2: (optionally) OSC messages received via UDP are forwarded to server on a WebSocket
 // connection #3: (optionally) feedback from stdin is forwarded to server on a WebSocket
 
 var connectWs = function() {
@@ -122,7 +137,7 @@ var connectWs = function() {
 	    'address': m.address,
 	    'args': m.args
 	};
-	try { ws.send(JSON.stringify(n)); } 
+	try { ws.send(JSON.stringify(n)); }
 	catch(e) {
 	    stderr.write("warning: exception in WebSocket send\n");
 	}
