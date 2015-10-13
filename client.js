@@ -103,9 +103,7 @@ if(withTidal != null) {
 }
 
 function sanitizeStringForTidal(x) {
-  stderr.write("x is: " + x + "\n");
   var lines = x.split("\n");
-  stderr.write("lines is: " + lines + "\n");
   var result = "";
   var blockOpen = false;
   for(var n in lines) {
