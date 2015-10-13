@@ -9,7 +9,10 @@ var fs = require('fs');
 // some global variables
 var stderr = process.stderr;
 var output = process.stdin;
-var feedBackSource = process.stdin;
+
+var defaultFeedbackFunction = function(x) {
+  stderr.write(x + "\n");
+}
 
 // parse command-line options
 var knownOpts = {
@@ -84,6 +87,7 @@ var withTidal = parsed['tidal'];
 var withTidalVisuals = parsed['tidalVisuals'];
 if(withTidalVisuals!=null) { withTidal = true; }
 
+var child;
 var tidal;
 if(withTidal != null) {
     tidal = spawn('ghci', ['-XOverloadedStrings']);
@@ -92,6 +96,12 @@ if(withTidal != null) {
     });
     output = tidal.stdin;
     feedbackSource = tidal.stderr;
+    tidal.stderr.addListener("data", function(m) {
+      defaultFeedbackFunction(m.toString());
+    });
+    tidal.stdout.addListener("data", function(m) {
+      defaultFeedbackFunction(m.toString());
+    });
     var dotGhci;
     if(withTidalVisuals == null) { dotGhci = ".ghciNoVisuals"; }
     else { dotGhci = ".ghciVisuals"; }
@@ -100,6 +110,7 @@ if(withTidal != null) {
       tidal.stdin.write(data);
       console.log("Tidal/GHCI initialized");
     });
+    child = tidal;
 }
 
 function sanitizeStringForTidal(x) {
@@ -156,56 +167,58 @@ var connectWs = function() {
     stderr.write("extramuros: connecting to " + wsAddress + "...\n");
     var ws = new WebSocket(wsAddress);
     var udp,oscFunction,feedbackFunction;
+
     oscFunction = function(m) {
-	var n = {
-	    'request': 'oscFromClient',
-	    'password' : password,
-	    'address': m.address,
-	    'args': m.args
-	};
-	try { ws.send(JSON.stringify(n)); }
-	catch(e) {
-	    stderr.write("warning: exception in WebSocket send\n");
-	}
+      var n = {
+        'request': 'oscFromClient',
+        'password' : password,
+        'address': m.address,
+        'args': m.args
+      };
+      try { ws.send(JSON.stringify(n)); }
+      catch(e) {
+        stderr.write("warning: exception in WebSocket send\n");
+      }
     }
+
     feedbackFunction = function(m) {
-	var n = {
-	    'request': 'feedback',
-	    'password' : password,
-	    'text': m.toString()
-	};
-	try { ws.send(JSON.stringify(n)); }
-	catch(e) {
-	    stderr.write("warning: exception in WebSocket send\n");
-	}
+      var n = {'request': 'feedback','password' : password,'text': m.toString() };
+      try { ws.send(JSON.stringify(n)); }
+      catch(e) { stderr.write("warning: exception in WebSocket send\n"); }
     }
+
     ws.on('open',function() {
-	stderr.write("extramuros: webSocket connection " + wsAddress + " opened\n");
-	if(oscPort !=null) {
-	    udp = new osc.UDPPort( { localAddress: "0.0.0.0",localPort: oscPort});
-	    udp.on("message",oscFunction);
-	    udp.open();
-	}
-	if(feedback != null) {
-	    if(tidal != null) {
-		tidal.stdout.addListener("data",feedbackFunction);
-		tidal.stderr.addListener("data",feedbackFunction);
-	    }
-	}
+      stderr.write("extramuros: connected to " + wsAddress + "\n");
+      if(oscPort !=null) {
+        udp = new osc.UDPPort( { localAddress: "0.0.0.0",localPort: oscPort});
+        udp.on("message",oscFunction);
+        udp.open();
+      }
+      if(feedback != null) {
+        if(child != null) {
+          child.stderr.addListener("data",feedbackFunction);
+          child.stdout.addListener("data",feedbackFunction);
+        }
+      }
     });
+
     ws.on('close',function() {
-	stderr.write("extramuros: websocket connection " + wsAddress + " closed\n");
-	if(oscPort!=null)udp.close();
-	if(feedback!=null) {
-	    tidal.stdout.removeListener("data",feedbackFunction);
-	    tidal.stderr.removeListener("data",feedbackFunction);
-	}
-	setTimeout(connectWs,5000);
+      stderr.write("extramuros: websocket connection " + wsAddress + " closed\n");
+      if(oscPort!=null)udp.close();
+      if(feedback != null) {
+        if(child != null) {
+          child.stderr.removeListener("data",feedbackFunction);
+          child.stdout.removeListener("data",feedbackFunction)
+        }
+      }
+      setTimeout(connectWs,5000);
     });
+
     ws.on('error',function() {
-	setTimeout(connectWs,5000);
+      setTimeout(connectWs,5000);
     });
 };
+
 if(wsAddress != null) connectWs();
 
 process.on('SIGINT', function() { sub.close(); ws.close(); } );
