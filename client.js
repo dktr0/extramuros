@@ -102,18 +102,46 @@ if(withTidal != null) {
     });
 }
 
+function sanitizeStringForTidal(x) {
+  stderr.write("x is: " + x + "\n");
+  var lines = x.split("\n");
+  stderr.write("lines is: " + lines + "\n");
+  var result = "";
+  var blockOpen = false;
+  for(var n in lines) {
+    var line = lines[n];
+    var startsWithSpace = false;
+    if(line[0] == " " || line[0] == "\t") startsWithSpace = true;
+    if(blockOpen == false) {
+      blockOpen = true;
+      result = result + ":{\n" + line + "\n";
+    }
+    else if(startsWithSpace == false) {
+      result = result + ":}\n:{\n" + line + "\n";
+    }
+    else if(startsWithSpace == true) {
+      result = result + line + "\n";
+    }
+  }
+  if(blockOpen == true) {
+    result = result + ":}\n";
+    blockOpen = false;
+  }
+  return result;
+}
+
 // connection #1: messages on 0mq socket from server to stdout (to be piped into a live coding language)
 var sub = zmq.socket('sub');
 sub.on('error',function (err) {
-  stderr.write("extramuros: error event on socket: " + err + "\n");
+  stderr.write("extramuros: error event on zmq socket: " + err + "\n");
 });
 sub.on('message',function (msg) {
-  var s;
+  var s = msg.toString();
   if(newlines) { // convert newline sequences to whitespace
-      s = msg.toString().replace(/\n|\n\r|\r\n|\r/g," ");
+      s = s.replace(/\n|\n\r|\r\n|\r/g," ");
   }
-  else { // leave newline sequences as is
-      s = msg.toString();
+  else if(withTidal) {
+    s = sanitizeStringForTidal(s);
   }
   // console.log(s); // JUST TESTING
   output.write(s+"\n");
