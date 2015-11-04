@@ -8,7 +8,7 @@ var fs = require('fs');
 
 // some global variables
 var stderr = process.stderr;
-var output = process.stdin;
+var output = process.stdout;
 
 var defaultFeedbackFunction = function(x) {
   stderr.write(x + "\n");
