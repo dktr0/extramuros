@@ -1,4 +1,5 @@
 import Sound.Tidal.Context
+(cps,getNow) <- cpsUtils
 d1 <- dirtStream
 d2 <- dirtStream
 d3 <- dirtStream
@@ -19,4 +20,4 @@ d17 <- dirtStream
 d18 <- dirtStream
 d19 <- dirtStream
 d20 <- dirtStream
-(cps, getNow) <- bpsUtils
+-- (cps, getNow) <- bpsUtils
