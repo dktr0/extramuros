@@ -130,8 +130,8 @@ if(withTidal != null) {
     });
     var dotGhci;
     if(withCustomTidalBoot != null) { dotGhci = withCustomTidalBoot; }
-    else if(withTidalSuperDirt != null) { dotGhci = ".ghciSuperDirt"; }
-    else if(withTidalVisuals != null) { dotGhci = ".ghciVisuals"; }
+    else if(withTidalSuperDirt == true) { dotGhci = ".ghciSuperDirt"; }
+    else if(withTidalVisuals == true) { dotGhci = ".ghciVisuals"; }
     else { dotGhci = ".ghciNoVisuals"; }
     fs.readFile(dotGhci,'utf8', function (err,data) {
       if (err) { console.log(err); return; }
