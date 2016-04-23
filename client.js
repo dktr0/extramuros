@@ -96,19 +96,19 @@ var withTidalVisuals = parsed['tidalVisuals'];
 var withTidalSuperDirt = parsed['tidalSuperDirt'];
 if(withTidal!=null && typeof withTidal!="boolean") { // custom tidal boot file provided
   if(withTidalVisuals!=true || withTidalSuperDirt!=true) {
-    stderr.write("Error: Too many arguments provided for Tidal boot options");
+    stderr.write("Error: Too many arguments provided for Tidal boot options\n");
     System.exit(1);
   }
   else {
     try{ fs.accessSync(withTidal, fs.F_OK); }
     catch (e) { 
-      stderr.write("Error: Tidal boot file does not exist"); 
+      stderr.write("Error: Tidal boot file does not exist\n"); 
       System.exit(1);
     }
   }
 }
 if(withTidalVisuals==true && withTidalSuperDirt==true) {
-  stderr.write("Error: Cannot boot SuperDirt with visuals enabled");
+  stderr.write("Error: Cannot boot SuperDirt with visuals enabled\n");
   System.exit(1);
 }
 if(withTidalVisuals!=null || withTidalSuperDirt!=null) { withTidal = true; }
