@@ -5,6 +5,7 @@ var zmq = require('zmq');
 var WebSocket = require('ws');
 var osc = require('osc');
 var fs = require('fs');
+var path = require('path');
 
 // some global variables
 var stderr = process.stderr;
@@ -25,6 +26,8 @@ var knownOpts = {
     "feedback": Boolean,
     "tidal": Boolean,
     "tidalVisuals": Boolean,
+    "tidalSuperDirt": Boolean,
+    "tidalCustom": [path],
     "newlines-as-spaces" : Boolean
 };
 
@@ -35,6 +38,8 @@ var shortHands = {
     "o" : ["--osc-port"],
     "w" : ["--ws-port"],
     "p" : ["--password"],
+    "t" : ["--tidal"],
+    "T" : ["--tidalCustom"],
     "h" : ["--help"],
     "f" : ["--feedback"]
 };
@@ -43,16 +48,18 @@ var parsed = nopt(knownOpts,shortHands,process.argv,2);
 
 if(parsed['help']!=null) {
     stderr.write("extramuros client.js usage:\n");
-    stderr.write(" --help (-h)               this help message\n");
-    stderr.write(" --server (-s) [address]   address of server's downstream (default:localhost)\n");
-    stderr.write(" --zmq-port (-z) [number]  TCP port on which to connect to server (default: 8001)\n");
-    stderr.write(" --ws-port [number]        port for OSC WebSocket connection to server (default: 8002)\n");
-    stderr.write(" --osc-port [number]       UDP port on which to receive OSC messages (default: none)\n");
-    stderr.write(" --password [word] (-p)    password to authenticate messages to server\n");
-    stderr.write(" --feedback (-f)           send feedback from stdin to server\n");
-    stderr.write(" --tidal                   launch Tidal (ghci) and use its stdout as feedback\n");
-    stderr.write(" --tidalVisuals            launch Tidal (ghci) with .ghciVisuals\n");
-    stderr.write(" --newlines-as-spaces (-n) converts any received newlines to spaces on stdout\n");
+    stderr.write(" --help (-h)                 this help message\n");
+    stderr.write(" --server (-s) [address]     address of server's downstream (default:localhost)\n");
+    stderr.write(" --zmq-port (-z) [number]    TCP port on which to connect to server (default: 8001)\n");
+    stderr.write(" --ws-port [number]          port for OSC WebSocket connection to server (default: 8002)\n");
+    stderr.write(" --osc-port [number]         UDP port on which to receive OSC messages (default: none)\n");
+    stderr.write(" --password [word] (-p)      password to authenticate messages to server\n");
+    stderr.write(" --feedback (-f)             send feedback from stdin to server\n");
+    stderr.write(" --tidal (-t)                launch Tidal (ghci) and use its stdout as feedback with\n");
+    stderr.write(" --tidalVisuals              launch Tidal (ghci) with .ghciVisuals\n");
+    stderr.write(" --tidalSuperDirt            launch Tidal (ghci) with .ghciSuperDirt\n");
+    stderr.write(" --tidalCustom (-T) filename launch Tidal (ghci) with custom startup file\n");
+    stderr.write(" --newlines-as-spaces (-n)   converts any received newlines to spaces on stdout\n");
     process.exit(1);
 }
 
@@ -85,7 +92,26 @@ if(oscPort!=null && password == null) {
 
 var withTidal = parsed['tidal'];
 var withTidalVisuals = parsed['tidalVisuals'];
-if(withTidalVisuals!=null) { withTidal = true; }
+var withTidalSuperDirt = parsed['tidalSuperDirt'];
+var withCustomTidalBoot = parsed['tidalCustom'];
+if(withCustomTidalBoot!=null) {                      // custom tidal boot file provided
+  if(withTidalVisuals==true || withTidalSuperDirt==true) {
+    stderr.write("Error: Too many arguments provided for Tidal boot options\n");
+    process.exit(1);
+  }
+  else {
+    try{ fs.accessSync(withCustomTidalBoot, fs.F_OK); }
+    catch (e) { 
+     stderr.write("Error: Tidal boot file does not exist\n"); 
+     process.exit(1);
+    }
+  }
+}
+if(withTidalVisuals==true && withTidalSuperDirt==true) {
+  stderr.write("Error: Cannot boot SuperDirt with visuals enabled\n");
+  process.exit(1);
+}
+if(withTidalVisuals!=null || withTidalSuperDirt!=null || withCustomTidalBoot!=null) { withTidal = true; }
 
 var child;
 var tidal;
@@ -103,8 +129,10 @@ if(withTidal != null) {
       defaultFeedbackFunction(m.toString());
     });
     var dotGhci;
-    if(withTidalVisuals == null) { dotGhci = ".ghciNoVisuals"; }
-    else { dotGhci = ".ghciVisuals"; }
+    if(withCustomTidalBoot != null) { dotGhci = withCustomTidalBoot; }
+    else if(withTidalSuperDirt == true) { dotGhci = ".ghciSuperDirt"; }
+    else if(withTidalVisuals == true) { dotGhci = ".ghciVisuals"; }
+    else { dotGhci = ".ghciNoVisuals"; }
     fs.readFile(dotGhci,'utf8', function (err,data) {
       if (err) { console.log(err); return; }
       tidal.stdin.write(data);
