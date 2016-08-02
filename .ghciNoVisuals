@@ -1,23 +1,45 @@
 import Sound.Tidal.Context
-(cps,getNow) <- cpsUtils
-d1 <- dirtStream
-d2 <- dirtStream
-d3 <- dirtStream
-d4 <- dirtStream
-d5 <- dirtStream
-d6 <- dirtStream
-d7 <- dirtStream
-d8 <- dirtStream
-d9 <- dirtStream
-d10 <- dirtStream
-d11 <- dirtStream
-d12 <- dirtStream
-d13 <- dirtStream
-d14 <- dirtStream
-d15 <- dirtStream
-d16 <- dirtStream
-d17 <- dirtStream
-d18 <- dirtStream
-d19 <- dirtStream
-d20 <- dirtStream
--- (cps, getNow) <- bpsUtils
+(cps, getNow) <- bpsUtils
+(d1,t1) <- superDirtSetters getNow
+(d2,t2) <- superDirtSetters getNow
+(d3,t3) <- superDirtSetters getNow
+(d4,t4) <- superDirtSetters getNow
+(d5,t5) <- superDirtSetters getNow
+(d6,t6) <- superDirtSetters getNow
+(d7,t7) <- superDirtSetters getNow
+(d8,t8) <- superDirtSetters getNow
+(d9,t9) <- superDirtSetters getNow
+(d10,t10) <- superDirtSetters getNow
+(d11,t11) <- superDirtSetters getNow
+(d12,t12) <- superDirtSetters getNow
+(d13,t13) <- superDirtSetters getNow
+(d14,t14) <- superDirtSetters getNow
+(d15,t15) <- superDirtSetters getNow
+(d16,t16) <- superDirtSetters getNow
+(d17,t17) <- superDirtSetters getNow
+(d18,t18) <- superDirtSetters getNow
+(d19,t19) <- superDirtSetters getNow
+(d20,t20) <- superDirtSetters getNow
+(c1,ct1) <- dirtSetters getNow
+(c2,ct2) <- dirtSetters getNow
+(c3,ct3) <- dirtSetters getNow
+(c4,ct4) <- dirtSetters getNow
+(c5,ct5) <- dirtSetters getNow
+(c6,ct6) <- dirtSetters getNow
+(c7,ct7) <- dirtSetters getNow
+(c8,ct8) <- dirtSetters getNow
+(c9,ct9) <- dirtSetters getNow
+(c10,ct10) <- dirtSetters getNow
+(c11,ct11) <- dirtSetters getNow
+(c12,ct12) <- dirtSetters getNow
+(c13,ct13) <- dirtSetters getNow
+(c14,ct14) <- dirtSetters getNow
+(c15,ct15) <- dirtSetters getNow
+(c16,ct16) <- dirtSetters getNow
+(c17,ct17) <- dirtSetters getNow
+(c18,ct18) <- dirtSetters getNow
+(c19,ct19) <- dirtSetters getNow
+(c20,ct20) <- dirtSetters getNow
+let bps x = cps (x/2)
+let hush = mapM_ ($ silence) [c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20]
+let solo = (>>) hush

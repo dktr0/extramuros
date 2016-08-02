@@ -2,3 +2,5 @@ node_modules
 jquery*
 #*
 *~
+.DS_Store
+
