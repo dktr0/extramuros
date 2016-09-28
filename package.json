@@ -6,7 +6,6 @@
 	"ws": "*",
 	"osc": "*",
 	"coffee-script": "*",
-	"zmq": "*",
 	"share": "0.6.3",
 	"nopt": "*"
     }

@@ -6,7 +6,7 @@ var osc = new Osc();
 
 function setup(nEditors) {
     window.WebSocket = window.WebSocket || window.MozWebSocket;
-    var url = 'ws://' + location.hostname + ':8002';
+    var url = 'ws://' + location.hostname + ':8000';
     console.log("attempting websocket connection to " + url);
     ws = new WebSocket(url);
     ws.onopen = function () {
@@ -103,7 +103,7 @@ function setupKeyboardHandlers() {
 	    eval(code);
 	}
 	else if(event.which == 13 && event.shiftKey) {
-	    // shift+Enter: evaluate buffer globally through the server   
+	    // shift+Enter: evaluate buffer globally through the server
 	    event.preventDefault();
 	    evaluateBuffer(event.target.id);
 	}
@@ -131,13 +131,13 @@ function setupKeyboardHandlers() {
 }
 
 // path = "/play",
-// params = [  
-//1// S "sound" Nothing,     
-//2// F "offset" (Just 0),   
-//3// F "begin" (Just 0),     
-//4// F "end" (Just 1),      
-//5// F "speed" (Just 1),       
-//6// F "pan" (Just 0.5),     
+// params = [
+//1// S "sound" Nothing,
+//2// F "offset" (Just 0),
+//3// F "begin" (Just 0),
+//4// F "end" (Just 1),
+//5// F "speed" (Just 1),
+//6// F "pan" (Just 0.5),
 //7// F "velocity" (Just 0),
 //8// S "vowel" (Just ""),
 //9// F "cutoff" (Just 0),

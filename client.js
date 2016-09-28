@@ -1,7 +1,7 @@
 // our required dependencies
 var spawn = require('child_process').spawn;
 var nopt = require('nopt');
-var zmq = require('zmq');
+// var zmq = require('zmq');
 var WebSocket = require('ws');
 var osc = require('osc');
 var fs = require('fs');
@@ -18,7 +18,6 @@ var defaultFeedbackFunction = function(x) {
 // parse command-line options
 var knownOpts = {
     "server" : [String, null],
-    "zmq-port" : [Number, null],
     "osc-port" : [Number, null],
     "ws-port" : [Number, null],
     "password" : [String, null],
@@ -32,7 +31,6 @@ var knownOpts = {
 
 var shortHands = {
     "s" : ["--server"],
-    "z" : ["--zmq-port"],
     "n" : ["--newlines-as-spaces"],
     "o" : ["--osc-port"],
     "w" : ["--ws-port"],
@@ -49,8 +47,7 @@ if(parsed['help']!=null) {
     stderr.write("extramuros client.js usage:\n");
     stderr.write(" --help (-h)                 this help message\n");
     stderr.write(" --server (-s) [address]     address of server's downstream (default:localhost)\n");
-    stderr.write(" --zmq-port (-z) [number]    TCP port on which to connect to server (default: 8001)\n");
-    stderr.write(" --ws-port [number]          port for OSC WebSocket connection to server (default: 8002)\n");
+    stderr.write(" --ws-port [number]          port for OSC WebSocket connection to server (default: 8000)\n");
     stderr.write(" --osc-port [number]         UDP port on which to receive OSC messages (default: none)\n");
     stderr.write(" --password [word] (-p)      password to authenticate messages to server\n");
     stderr.write(" --feedback (-f)             send feedback from stdin to server\n");
@@ -69,19 +66,11 @@ if(process.argv.length<3) {
 var newlines = parsed['newlines-as-spaces'];
 var server = parsed['server'];
 if(server == null) { server = "localhost"; }
-var port = parsed['zmq-port'];
-if(port == null) { port = 8001; }
+var port = parsed['ws-port'];
+if(port == null) { port = 8000; }
 var oscPort = parsed['osc-port'];
-var wsPort = parsed['ws-port'];
 var feedback = parsed['feedback'];
-if((oscPort==null && feedback==null) && wsPort!=null) {
-    stderr.write("Error: OSC forwarding and/or feedback must be present if --ws-port is set\n");
-    process.exit(1);
-}
-if(wsPort==null && (oscPort!=null || feedback!=null)) { wsPort = 8002; }
-var address = "tcp://" + server + ":" + (port.toString());
-var wsAddress;
-if(wsPort!=null) { wsAddress = "ws://" + server + ":" + (wsPort.toString()); }
+var wsAddress = "ws://" + server + ":" + (port.toString());
 var password = parsed['password'];
 if(oscPort!=null && password == null) {
     stderr.write("Error: Password required if an OSC port is specified\n");
@@ -159,52 +148,22 @@ function sanitizeStringForTidal(x) {
   return result;
 }
 
-// connection #1: messages on 0mq socket from server to stdout (to be piped into a live coding language)
-var sub = zmq.socket('sub');
-sub.on('error',function (err) {
-  stderr.write("extramuros: error event on zmq socket: " + err + "\n");
-});
-sub.on('message',function (msg) {
-  var s = msg.toString();
-  if(newlines) { // convert newline sequences to whitespace
-      s = s.replace(/\n|\n\r|\r\n|\r/g," ");
-  }
-  else if(withTidal) {
-    s = sanitizeStringForTidal(s);
-  }
-  // console.log(s); // JUST TESTING
-  output.write(s+"\n");
-  stderr.write(s+"\n");
-});
-stderr.write("extramuros: subscribing to " + address + "\n");
-sub.connect(address);
-sub.subscribe('');
-
-// connection #2: (optionally) OSC messages received via UDP are forwarded to server on a WebSocket
-// connection #3: (optionally) feedback from stdin is forwarded to server on a WebSocket
-
 var connectWs = function() {
     stderr.write("extramuros: connecting to " + wsAddress + "...\n");
     var ws = new WebSocket(wsAddress);
     var udp,oscFunction,feedbackFunction;
 
+    send = function(o) {
+      try {ws.send(JSON.stringify(o))}
+      catch(e) {stderr.write("warning: exception in WebSocket send\n")}
+    }
+
     oscFunction = function(m) {
-      var n = {
-        'request': 'oscFromClient',
-        'password' : password,
-        'address': m.address,
-        'args': m.args
-      };
-      try { ws.send(JSON.stringify(n)); }
-      catch(e) {
-        stderr.write("warning: exception in WebSocket send\n");
-      }
+      send({ 'request': 'oscFromClient', 'password' : password, 'address': m.address, 'args': m.args });
     }
 
     feedbackFunction = function(m) {
-      var n = {'request': 'feedback','password' : password,'text': m.toString() };
-      try { ws.send(JSON.stringify(n)); }
-      catch(e) { stderr.write("warning: exception in WebSocket send\n"); }
+      send({'request': 'feedback','password' : password,'text': m.toString() });
     }
 
     ws.on('open',function() {
@@ -219,6 +178,22 @@ var connectWs = function() {
           child.stderr.addListener("data",feedbackFunction);
           child.stdout.addListener("data",feedbackFunction);
         }
+      }
+    });
+
+    ws.on('message',function(m) {
+      var n = JSON.parse(m);
+      if(n.type == 'eval') {
+        var s = n.code;
+        if(newlines) { // convert newline sequences to whitespace
+            s = s.replace(/\n|\n\r|\r\n|\r/g," ");
+        }
+        else if(withTidal) {
+          s = sanitizeStringForTidal(s);
+        }
+        // console.log(s); // JUST TESTING
+        output.write(s+"\n");
+        stderr.write(s+"\n");
       }
     });
 
@@ -241,4 +216,4 @@ var connectWs = function() {
 
 if(wsAddress != null) connectWs();
 
-process.on('SIGINT', function() { sub.close(); ws.close(); } );
+process.on('SIGINT', function() { /* sub.close(); */ ws.close(); } );

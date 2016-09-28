@@ -1,9 +1,10 @@
 // required dependencies
 require('coffee-script');
+var http = require('http');
 var express = require('express');
 var sharejs = require('share');
 var nopt = require('nopt');
-var zmq = require('zmq');
+// var zmq = require('zmq');
 var WebSocket = require('ws');
 var osc = require('osc');
 
@@ -11,10 +12,8 @@ var osc = require('osc');
 var stderr = process.stderr;
 
 // parse command-line options
-var knownOpts = { 
+var knownOpts = {
     "password" : [String, null],
-    "http-port" : [Number, null],
-    "zmq-port" : [Number, null],
     "ws-port" : [Number, null],
     "osc-port" : [Number, null],
     "help": Boolean
@@ -22,8 +21,6 @@ var knownOpts = {
 
 var shortHands = {
     "p" : ["--password"],
-    "h" : ["--http-port"],
-    "z" : ["--zmq-port"],
     "w" : ["--ws-port"],
     "o" : ["--osc-port"]
 };
@@ -34,9 +31,7 @@ if(parsed['help']!=null) {
     stderr.write("extramuros server.js usage:\n");
     stderr.write(" --help (-h)               this help message\n");
     stderr.write(" --password [word] (-p)    password to authenticate messages to server (required)\n");
-    stderr.write(" --http-port (-h) [number] TCP port for plain HTTP requests (default: 8000)\n");
-    stderr.write(" --zmq-port (-z) [number]  TCP port for 0mq connections to client (default: 8001)\n");
-    stderr.write(" --ws-port (-w) [number]   TCP port for WebSocket connections to browsers and clients (default: 8002)\n");
+    stderr.write(" --ws-port (-w) [number]   TCP port for WebSocket connections to browsers and clients (default: 8000)\n");
     stderr.write(" --osc-port (-o) [number]  UDP port on which to receive OSC messages (default: none)\n");
     process.exit(1);
 }
@@ -45,12 +40,8 @@ if(process.argv.length<3) {
     stderr.write("extramuros: use --help to display available options\n");
 }
 
-var httpPort = parsed['http-port'];
-if(httpPort==null) httpPort = 8000;
-var zmqPort = parsed['zmq-port'];
-if(zmqPort==null) zmqPort = 8001;
 var wsPort = parsed['ws-port'];
-if(wsPort==null) wsPort = 8002;
+if(wsPort==null) wsPort = 8000;
 var oscPort = parsed['osc-port'];
 var password = parsed['password'];
 if(password == null) {
@@ -58,21 +49,13 @@ if(password == null) {
     process.exit(1);
 }
 
-var server = express();
-server.use(express.static(__dirname));
+var httpServer = http.createServer();
+var expressServer = express();
+expressServer.use(express.static(__dirname));
+httpServer.on('request',expressServer);
 
-var pub = zmq.socket('pub');
-var zmqAddress = "tcp://*:" + zmqPort.toString();
-pub.bind(zmqAddress, function(err) {
-  if(err) {
-      console.log(err);
-      process.exit(1);
-  }
-  else console.log("extramuros: listening on " + zmqAddress + " for 0mq subscribers");
-});
-
-var stdin = process.openStdin();
-stdin.addListener("data", function (d) { pub.send(d); });
+// var stdin = process.openStdin();
+// stdin.addListener("data", function (d) { pub.send(d); });
 
 var options = {
   db: {type: 'none'},
@@ -87,8 +70,7 @@ var options = {
   }
 };
 
-var wss = new WebSocket.Server({port: wsPort});
-stderr.write("extramuros: listening for WebSocket connections on port " + wsPort.toString()+"\n");
+var wss = new WebSocket.Server({server: httpServer});
 wss.broadcast = function(data) {
   for (var i in this.clients)
     this.clients[i].send(data);
@@ -147,10 +129,14 @@ wss.on('connection',function(ws) {
 if(udp!=null)udp.open();
 
 function evaluateBuffer(name) {
-    sharejs.client.open(name,'text','http://127.0.0.1:' + httpPort + '/channel', function (err,doc) {
-	console.log(doc.getText());
-	pub.send(doc.getText());
-    });
+  sharejs.client.open(name,'text','http://127.0.0.1:' + wsPort + '/channel', function (err,doc) {
+    var t = doc.getText();
+    var n = { type: 'eval', code: t };
+    try { wss.broadcast(JSON.stringify(n)); }
+    catch (e) { stderr.write("warning: exception in WebSocket broadcast\n"); }
+    console.log(JSON.stringify(n));
+    // pub.send(doc.getText());
+  });
 }
 
 function evaluateJavaScriptGlobally(code) {
@@ -171,14 +157,14 @@ function forwardFeedbackFromClient(text) {
     catch(e) { stderr.write("warning: exception in WebSocket broadcast\n"); }
 }
 
-var shareserver = sharejs.server.attach(server, options);
+var shareserver = sharejs.server.attach(expressServer, options);
 
-server.get('/?', function(req, res, next) {
+expressServer.get('/?', function(req, res, next) {
   res.writeHead(302, {location: '/index.html'});
   res.end();
 });
-server.listen(httpPort);
-console.log("extramuros: listening on port " + httpPort + " for HTTP");
+httpServer.listen(wsPort);
+console.log("extramuros server, listening on TCP port " + wsPort + " (http/WebSockets)");
 
 process.title = 'extramuros';
 process.on('SIGINT',function() { pub.close(); });
