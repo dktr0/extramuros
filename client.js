@@ -148,6 +148,12 @@ function sanitizeStringForTidal(x) {
   return result;
 }
 
+if(oscPort !=null) {
+  stderr.write("extramuros: listening for OSC on UDP port " + oscPort);
+  udp = new osc.UDPPort( { localAddress: "0.0.0.0",localPort: oscPort});
+  udp.open();
+}
+
 var connectWs = function() {
     stderr.write("extramuros: connecting to " + wsAddress + "...\n");
     var ws = new WebSocket(wsAddress);
@@ -169,9 +175,7 @@ var connectWs = function() {
     ws.on('open',function() {
       stderr.write("extramuros: connected to " + wsAddress + "\n");
       if(oscPort !=null) {
-        udp = new osc.UDPPort( { localAddress: "0.0.0.0",localPort: oscPort});
-        udp.on("message",oscFunction);
-        udp.open();
+        if(udp!=null) udp.on("message",oscFunction);
       }
       if(feedback != null) {
         if(child != null) {
@@ -199,7 +203,7 @@ var connectWs = function() {
 
     ws.on('close',function() {
       stderr.write("extramuros: websocket connection " + wsAddress + " closed\n");
-      if(oscPort!=null)udp.close();
+      if(udp!=null)udp.close();
       if(feedback != null) {
         if(child != null) {
           child.stderr.removeListener("data",feedbackFunction);
@@ -210,7 +214,7 @@ var connectWs = function() {
     });
 
     ws.on('error',function() {
-      setTimeout(connectWs,5000);
+      // setTimeout(connectWs,5000);
     });
 };
 
