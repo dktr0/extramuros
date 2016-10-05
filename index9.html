@@ -5,7 +5,7 @@
  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
-<body onload="setup(8)">
+<body onload="setup(9)">
 <div id="global">
 <table>
 
@@ -42,7 +42,10 @@
 <td><textarea id="edit8" rows="5" disabled>******</textarea></td>
 </tr>
 
-
+<tr>
+<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit9');"/></td>
+<td><textarea id="edit9" rows="5" disabled>******</textarea></td>
+</tr>
 <tr>
 <td colspan="2"><textarea id="feedback" rows="6" style="width: 445px;"></textarea></td>
 </tr>
@@ -53,8 +56,8 @@
 <script src="/share/share.uncompressed.js"></script>
 <script src="/share/textarea.js"></script>
 <script src="/share/json.js"></script>
-<script src="jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+<script src="jquery.min.js"></script> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="browser.js"></script>
 <script src="visuals.js"></script>
 <script src="misc.js"></script>

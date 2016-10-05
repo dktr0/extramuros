@@ -5,7 +5,7 @@
  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
-<body onload="setup(3)">
+<body onload="setup(4);">
 <div id="global">
 <table>
 
@@ -16,33 +16,34 @@
 
 <tr>
 <td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit1');"/></td>
-<td><textarea id="edit1" rows="6" disabled>******</textarea></td>
-</tr>
-
-<tr>
+<td><textarea id="edit1" rows="16" disabled>******</textarea></td>
 <td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit2');"/></td>
-<td><textarea id="edit2" rows="6" disabled>******</textarea></td>
+<td><textarea id="edit2" rows="16" disabled>******</textarea></td>
 </tr>
 
 <tr>
 <td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit3');"/></td>
-<td><textarea id="edit3" rows="6" disabled>******</textarea></td>
+<td><textarea id="edit3" rows="16" disabled>******</textarea></td>
+<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit4');"/></td>
+<td><textarea id="edit4" rows="16" disabled>******</textarea></td>
 </tr>
 
 <tr>
-<td colspan="2"><textarea id="feedback" rows="6" disabled style="width: 445px;"></textarea></td>
+<td colspan="2"><textarea id="feedback" rows="6" style="width: 100%;"></textarea></td>
 </tr>
 
 </table>
 
+<div class="text"><a href="client.js">client.js</a></div>
+</div>
 <script src="/channel/bcsocket.js"></script>
 <script src="/share/share.uncompressed.js"></script>
 <script src="/share/textarea.js"></script>
 <script src="/share/json.js"></script>
 <script src="jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="browser.js"></script>
 <script src="visuals.js"></script>
+<script src="browser.js"></script>
 <script src="misc.js"></script>
 
 </body>

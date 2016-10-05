@@ -4,7 +4,7 @@ body {
 }
 
 textarea {
-  background: black;
+  background: transparent;
   color: white;
   width: 400px;
 }
@@ -17,4 +17,20 @@ textarea {
 .evalButton {
   background: darkGrey;
   color: white;
+}
+
+#global {
+padding: 20px; 
+position: absolute; 
+left: 0px;
+top: 0px;
+width: 100%;
+height: 100%; 
+}
+
+canvas {
+background: transparent;
+position: absolute; 
+left: 0px;
+top: 0px;
 }
