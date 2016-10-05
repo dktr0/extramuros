@@ -7,11 +7,10 @@ brew update
 brew doctor (consider the feedback from brew doctor carefully if you can)
 ```
 
-2. Use homebrew to install the node.js language and the zeromq networking library:
+2. Use homebrew to install the node.js language and pkg-config:
 ```
 brew install pkg-config
 brew install node
-brew install zeromq
 ```
 3. Download the extramuros folder and place it somewhere conveniently accessible from your terminal (code below places it in your home folder ~):
 ```
