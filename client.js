@@ -8,6 +8,7 @@ var fs = require('fs');
 var path = require('path');
 
 // some global variables
+var stdin = process.stdin;
 var stderr = process.stderr;
 var output = process.stdout;
 
@@ -219,5 +220,9 @@ var connectWs = function() {
 };
 
 if(wsAddress != null) connectWs();
+
+stdin.addListener("data", function (t) {
+  output.write(t+"\n");
+});
 
 process.on('SIGINT', function() { /* sub.close(); */ ws.close(); } );
