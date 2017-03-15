@@ -72,8 +72,8 @@ var options = {
 
 var wss = new WebSocket.Server({server: httpServer});
 wss.broadcast = function(data) {
-  for (var i in this.clients)
-    this.clients[i].send(data);
+  stderr.write("extramuros: broadcast to " + wss.clients.size + " clients\n");
+  for (let i of wss.clients) i.send(data);
 };
 
 var udp;
