@@ -82,7 +82,7 @@ if(oscPort != null) {
 	localAddress: "0.0.0.0",
 	localPort: oscPort
     });
-    stderr.write("extramuros: listening for OSC on UDP port " + udpPort.toString()+"\n");
+    stderr.write("extramuros: listening for OSC on UDP port " + oscPort.toString()+"\n");
 }
 
 wss.on('connection',function(ws) {
