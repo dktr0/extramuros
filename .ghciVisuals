@@ -2,19 +2,11 @@ import Sound.Tidal.Context
 
 (cps, getNow) <- bpsUtils
 
-(d1,t1) <- superDirts [57120,8000]
-(d2,t2) <- superDirts [57120,8000]
-(d3,t3) <- superDirts [57120,8000]
-(d4,t4) <- superDirts [57120,8000]
-(d5,t5) <- superDirts [57120,8000]
-(d6,t6) <- superDirts [57120,8000]
-(d7,t7) <- superDirts [57120,8000]
-(d8,t8) <- superDirts [57120,8000]
-(d9,t9) <- superDirts [57120,8000]
-(d10,t10) <- superDirts [57120,8000]
-(d11,t11) <- superDirts [57120,8000]
-(d12,t12) <- superDirts [57120,8000]
+d1' <- superDirts [57120,8000]
+
+let d1 x = ((fst (d1'!!0)) x) >> ((fst (d1'!!1))   x)
+let d1 x = ((snd (d1'!!0)) x) >> ((snd (d1'!!1))   x)
 
 let bps x = cps (x/2)
-let hush = mapM_ ($ silence) [d1,d2,d3,d4,d5,d6,d7,d8,d9]
+let hush = mapM_ ($ silence) [d1]
 let solo = (>>) hush
