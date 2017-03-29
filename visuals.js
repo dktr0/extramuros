@@ -1,21 +1,29 @@
-var i = {}; 
-var funct={}; 
-var fadeRate = 100; 
+var i = {};
+var funct={};
+var fadeRate = 100;
 
 var w; // width of our drawing context
 var h; // height of our drawing context
-var c; // a canvas context to use in live coding of visuals 
+var c; // a canvas context to use in live coding of visuals
 var draw = function() {}; // redefined in performance, called every animation frame
 var play = function(e) {}; // redefined in performance, called with events from server (i.e. /play messages from Tidal)
- 
+var play2 = function(e) {
+  // convert array from Tidal into a JSON object
+  var f = {};
+  for(var n=0;n<e.length;n+=2) {
+    f[e[n]] = e[n+1];
+  }
+  play(f);
+};
+
 function setupVisuals() {
     // add a new canvas adjusted to display dimensions and store context for later use
     $('<canvas>').attr({id: "gcanvas"}).css({zIndex: $('canvas').length + 3}).insertBefore('#global');
     $('#global').css({zIndex: $('canvas').length + 3});
     adjustCanvasDimensions();
     c = document.getElementById('gcanvas').getContext('2d');
-    c.fillStyle = "white"; 
-    c.strokeStyle = "white"; 
+    c.fillStyle = "white";
+    c.strokeStyle = "white";
     // and activate our animation callback function 'tick'
     requestAnimationFrame(tick); // activate our animation callback function 'tick'
     console.log('visuals are set');
@@ -28,7 +36,7 @@ function adjustCanvasDimensions() {
     canvas.width = w;
     canvas.height = h;
 }
-    
+
 function tick() {
     draw();
     $.each(funct, function(k,v) { eval(v); });

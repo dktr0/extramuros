@@ -1,11 +1,60 @@
-import Sound.Tidal.Context
+:module Sound.Tidal.Context
+import qualified Sound.Tidal.Scales as Scales
+import qualified Sound.Tidal.Chords as Chords
 
-(cps, getNow) <- bpsUtils
+(cps, getNow) <- cpsUtils
 
-d1' <- superDirts [57120,8000]
+let superDirtSetters' port = superDirtState port >>= \x -> return (setter x, transition getNow x)
 
-let d1 x = ((fst (d1'!!0)) x) >> ((fst (d1'!!1))   x)
-let d1 x = ((snd (d1'!!0)) x) >> ((snd (d1'!!1))   x)
+(d1',t1') <- superDirtSetters getNow
+(d1'',t1'') <- superDirtSetters' 8000
+(d2',t2') <- superDirtSetters getNow
+(d2'',t2'') <- superDirtSetters' 8000
+(d3',t3') <- superDirtSetters getNow
+(d3'',t3'') <- superDirtSetters' 8000
+(d4',t4') <- superDirtSetters getNow
+(d4'',t4'') <- superDirtSetters' 8000
+(d5',t5') <- superDirtSetters getNow
+(d5'',t5'') <- superDirtSetters' 8000
+(d6',t6') <- superDirtSetters getNow
+(d6'',t6'') <- superDirtSetters' 8000
+(d7',t7') <- superDirtSetters getNow
+(d7'',t7'') <- superDirtSetters' 8000
+(d8',t8') <- superDirtSetters getNow
+(d8'',t8'') <- superDirtSetters' 8000
+(d9',t9') <- superDirtSetters getNow
+(d9'',t9'') <- superDirtSetters' 8000
+(d10',t10') <- superDirtSetters getNow
+(d10'',t10'') <- superDirtSetters' 8000
+(d11',t11') <- superDirtSetters getNow
+(d11'',t11'') <- superDirtSetters' 8000
+(d12',t12') <- superDirtSetters getNow
+(d12'',t12'') <- superDirtSetters' 8000
+
+let d1 x = (d1' x) >> (d1'' x)
+let t1 x = (t1' x) >> (t1'' x)
+let d2 x = (d2' x) >> (d2'' x)
+let t2 x = (t2' x) >> (t2'' x)
+let d3 x = (d3' x) >> (d3'' x)
+let t3 x = (t3' x) >> (t3'' x)
+let d4 x = (d4' x) >> (d4'' x)
+let t4 x = (t4' x) >> (t4'' x)
+let d5 x = (d5' x) >> (d5'' x)
+let t5 x = (t5' x) >> (t5'' x)
+let d6 x = (d6' x) >> (d6'' x)
+let t6 x = (t6' x) >> (t6'' x)
+let d7 x = (d7' x) >> (d7'' x)
+let t7 x = (t7' x) >> (t7'' x)
+let d8 x = (d8' x) >> (d8'' x)
+let t8 x = (t8' x) >> (t8'' x)
+let d9 x = (d9' x) >> (d9'' x)
+let t9 x = (t9' x) >> (t9'' x)
+let d10 x = (d10' x) >> (d10'' x)
+let t10 x = (t10' x) >> (t10'' x)
+let d11 x = (d11' x) >> (d11'' x)
+let t11 x = (t11' x) >> (t11'' x)
+let d12 x = (d12' x) >> (d12'' x)
+let t12 x = (t12' x) >> (t12'' x)
 
 let bps x = cps (x/2)
 let hush = mapM_ ($ silence) [d1]
