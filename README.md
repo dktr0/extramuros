@@ -26,7 +26,7 @@ node client.js --server 127.0.0.1
 
 To test, enter some code into the text buffers in the web browser, make sure you have entered the funny password you chose (forgetting to enter the password in the browser window is a common mistake) and click "eval".  If everything is working, you should see the code from the browser appear in the terminal where you launched node client.js.  By the way, you can terminate the client (or server) by pressing Ctrl-C twice in the relevant terminal window.
 
-If that test worked, you're ready to launch a client piped into a language interpreter.  Here's a slightly abstract example of what that would look like: 
+If that test worked, you're ready to launch a client piped into a language interpreter.  Here's a slightly abstract example of what that would look like:
 ```
 cd ~/extramuros
 node client.js --server 127.0.0.1 | pathToYourFavouriteInterpreter
@@ -34,7 +34,7 @@ node client.js --server 127.0.0.1 | pathToYourFavouriteInterpreter
 
 For SuperCollider, one strategy is to pipe the text to sclang.  This is an example using a default SC installation on OSX (and assuming extramuros has been cloned into your user folder).  We use the --newlines-to-spaces option so that line breaks in the browser will become spaces in the code sent to SuperCollider, allowing you to stretch expressions over multiple lines.  Note that you won't have cmd-period to interrupt your SC synths, so it's helpful to have other ways of stopping/freeing things:
 ```
-cd /Applications/SuperCollider/SuperCollider.app/Contents/Resources/ 
+cd /Applications/SuperCollider/SuperCollider.app/Contents/Resources/
 node ~/extramuros/client.js --server 127.0.0.1 --newlines-to-spaces | ./sclang
 ```
 
@@ -49,10 +49,15 @@ cd ~/extramuros
 node client.js --server 127.0.0.1 --osc-port 8000 --password yourFunnyPasswordHere| ./sclang
 ```
 
-Another command-line option launches Tidal as a sub-process of the client.  Note that the extramuros distribution includes a file .ghci which helps establish a useful working environment for Tidal, and that because of this you should probably be in the extramuros folder when you start the client for Tidal:
+Another command-line option launches Tidal as a sub-process of the client.  Note that the extramuros distribution includes a file .ghci which helps establish a useful working environment for Tidal, and that because of this you should probably be in the extramuros folder when you start the client for Tidal. There are two main options for starting tidal - --tidal if you installed Tidal with stack, --tidalCabal if you installed Tidal with cabal:
 ```
 cd ~/extramuros
 node client.js --server 127.0.0.1 --tidal
+```
+
+```
+cd ~/extramuros
+node client.js --server 127.0.0.1 --tidalCabal
 ```
 
 In addition to being more convenient than the command-line pipes used above with SuperCollider, this option also allows for feedback from a client to reach the server and thus be displayed in the browser windows:
@@ -71,7 +76,7 @@ Now in the web browser, enter some code, make sure you have entered the correct 
 
 There are a number of keyboard short cuts:
 - Shift-Enter: evaluate code through the server (i.e. Tidal or SuperCollider code)
-- Ctrl-Shift-Enter: evaluate JavaScript code on all browsers 
+- Ctrl-Shift-Enter: evaluate JavaScript code on all browsers
 - Ctrl-Enter: evaluate JavaScript code on only this browser
 - Ctrl-Shift-C: clear the JavaScript canvas on all browsers
 - Alt-C: clear the JavaScript canvas on this browser only

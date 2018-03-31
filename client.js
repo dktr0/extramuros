@@ -26,6 +26,7 @@ var knownOpts = {
     "feedback": Boolean,
     "tidal": Boolean,
     "tidalVisuals": Boolean,
+    "tidalCabal": Boolean,
     "tidalCustom": [path],
     "newlines-as-spaces" : Boolean
 };
@@ -52,9 +53,8 @@ if(parsed['help']!=null) {
     stderr.write(" --osc-port [number]         UDP port on which to receive OSC messages (default: none)\n");
     stderr.write(" --password [word] (-p)      password to authenticate messages to server\n");
     stderr.write(" --feedback (-f)             send feedback from stdin to server\n");
-    stderr.write(" --tidal (-t)                launch Tidal (ghci) and use its stdout as feedback with\n");
-    stderr.write(" --tidalVisuals              launch Tidal (ghci) with .ghciVisuals\n");
-    stderr.write(" --tidalCustom (-T) filename launch Tidal (ghci) with custom startup file\n");
+    stderr.write(" --tidal (-t)                launch Tidal (as installed by stack)\n");
+    stderr.write(" --tidalCabal                launch Tidal (as installed by cabal)\n");
     stderr.write(" --newlines-as-spaces (-n)   converts any received newlines to spaces on stdout\n");
     process.exit(1);
 }
@@ -79,8 +79,10 @@ if(oscPort!=null && password == null) {
 }
 
 var withTidal = parsed['tidal'];
+var withTidalCabal = parsed['tidalCabal'];
 var withTidalVisuals = parsed['tidalVisuals'];
 var withCustomTidalBoot = parsed['tidalCustom'];
+if(withTidalCabal != null || withTidalVisuals != null || withCustomTidalBoot != null) withTidal = true;
 if(withCustomTidalBoot!=null) {                      // custom tidal boot file provided
   if(withTidalVisuals==true) {
     stderr.write("Error: Too many arguments provided for Tidal boot options\n");
@@ -94,12 +96,12 @@ if(withCustomTidalBoot!=null) {                      // custom tidal boot file p
     }
   }
 }
-if(withTidalVisuals!=null || withCustomTidalBoot!=null) { withTidal = true; }
 
 var child;
 var tidal;
 if(withTidal != null) {
-    tidal = spawn('ghci', ['-XOverloadedStrings']);
+    if(withTidalCabal != null) tidal = spawn('ghci', ['-XOverloadedStrings']);
+    else tidal = spawn('stack',['ghci','--ghci-options','-XOverloadedStrings']);
     tidal.on('close', function (code) {
       stderr.write('Tidal process exited with code ' + code + "\n");
     });

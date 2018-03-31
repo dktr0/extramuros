@@ -1,24 +1,16 @@
 extramuros installation instructions (Mac OS X)
 
-1. Install, update and check the homebrew package manager (if you don't already have it).  From a terminal window:
-```
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew update
-brew doctor (consider the feedback from brew doctor carefully if you can)
-```
+1. Install the node.js language by downloading a package from https://nodejs.org/en/download/
 
-2. Use homebrew to install the node.js language and pkg-config:
-```
-brew install pkg-config
-brew install node
-```
-3. Download the extramuros folder and place it somewhere conveniently accessible from your terminal (code below places it in your home folder ~):
+2. Download the extramuros folder and place it somewhere conveniently accessible from your terminal (code below places it in your home folder ~):
 ```
 cd ~
 git clone https://github.com/d0kt0r0/extramuros.git
 ```
 
-4. Use npm (node package manager, installed with node) to install the node packages required by extramuros:
+If you haven't used git before on the machine you may be prompted to install developer tools / agree to the Xcode license agreement, etc. If you follow those prompts/instructions, you'll then be able to do the instructions above and have them work.
+
+3. Use npm (node package manager, installed with node) to install the node packages required by extramuros:
 ```
 cd extramuros
 npm install
