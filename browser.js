@@ -73,6 +73,15 @@ function getPassword() {
 
 function translateCode(x) {
   if(x == "hola") return "hola!";
+  else if(x == "什么意思") return "shenme yisi";
+  else if(x == "我的") return "wode";
+  else if(x == "你们") return "nimen";
+  else if(x == "可以") return "keyi";
+  else if(x == "为什么") return "weishenme";
+  else if(x == "不懂") return "budong";
+  else if(x == "每天") return "meitian";
+  else if(x == "谁的") return "sheide";
+  else if(x == "不知道") return "buzhidao";
   else return x;
 }
 
