@@ -212,7 +212,8 @@ var connectWs = function() {
         // console.log(s); // JUST TESTING
         if(scOSC != null) {
           try {
-            udp.send( { address: ("/" + s) },"127.0.0.1",oscPort);
+            udp.send( { address: "/sparseSender", args: [{type: "s", value: s}] }
+            ,"127.0.0.1",oscPort);
             stderr.write(s+"\n");
           } catch(e) {
             stderr.write("exception attempting to send OSC to SC: " + s + "\n");
