@@ -34,8 +34,11 @@ function setup(nEditors) {
 	    // ummm... we should check to make sure the function exists first!...
 	}
 	if(data.type == 'js') {
-	    eval(data.code);
+    eval(data.code);
 	}
+  if(data.type == 'flash') {
+    flash(data.code);
+  }
 	if(data.type == 'feedback') {
 	    var fb = $('#feedback');
 	    var oldText = fb.val();
@@ -49,6 +52,15 @@ function setup(nEditors) {
     setupVisuals();
 }
 
+function flash(code) {
+  $('#flash')
+    .stop(true) // so that reattack before fade is finished starts right away
+    .html(code)
+    .animate({ opacity: "1"}, 10, function() {})
+    .animate({ opacity: "1"}, 500, function() {})
+    .animate({ opacity: "0"}, 5000, function() {})
+    ;
+}
 
 function getPassword() {
     var x = document.getElementById('password').value;
@@ -59,19 +71,29 @@ function getPassword() {
     return x;
 }
 
-function evaluateBuffer(name) {
+function translateCode(x) {
+  if(x == "hola") return "hola!";
+  else return x;
+}
+
+// function evaluateBuffer(name) {
+function evaluateBuffer(code) {
     var password = getPassword();
     if(password) {
-	var msg = { request: "eval", bufferName: name, password: password };
-	ws.send(JSON.stringify(msg));
+      // var msg = { request: "eval", bufferName: name, password: password };
+      var translated = translateCode(code);
+      var msg = { request: "eval", code: translated, password: password };
+      ws.send(JSON.stringify(msg));
+      msg = { request: "flash", code: code, password: password };
+      ws.send(JSON.stringify(msg));
     }
 }
 
 function evaluateJavaScriptGlobally(code) {
     var password = getPassword();
     if(password) {
-	var msg = { request: "evalJS", code: code, password: password };
-	ws.send(JSON.stringify(msg));
+      var msg = { request: "evalJS", code: code, password: password };
+      ws.send(JSON.stringify(msg));
     }
 }
 
@@ -105,7 +127,8 @@ function setupKeyboardHandlers() {
 	else if(event.which == 13 && event.shiftKey) {
 	    // shift+Enter: evaluate buffer globally through the server
 	    event.preventDefault();
-	    evaluateBuffer(event.target.id);
+	    // evaluateBuffer(event.target.id);
+      evaluateBuffer($(this).val());
 	}
 	else if(event.which == 67 && event.ctrlKey && event.shiftKey) {
 	    // ctrl+shift+c: global clear() on visuals

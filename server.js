@@ -101,9 +101,20 @@ wss.on('connection',function(ws) {
 	var n = JSON.parse(m);
 	if(n.request == "eval") {
 	    if(n.password == password) {
-		evaluateBuffer(n.bufferName);
+		// evaluateBuffer(n.bufferName);
+    // hacked here to allow code execution specified by client instead of server (dicey!!!)
+        var response = { 'type': 'eval', 'code': n.code };
+        try { wss.broadcast(JSON.stringify(response)); }
+        catch(e) { stderr.write("warning: exception in WebSocket broadcast\n"); }
 	    }
 	}
+  if(n.request == "flash") {
+    if(n.password == password) {
+      var response = { 'type': 'flash', 'code': n.code };
+      try { wss.broadcast(JSON.stringify(response)); }
+      catch(e) { stderr.write("warning: exception in WebSocket broadcast\n"); }
+    }
+  }
 	if(n.request == "evalJS") {
 	    if(n.password == password) {
 		evaluateJavaScriptGlobally(n.code);

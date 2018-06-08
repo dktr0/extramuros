@@ -28,6 +28,7 @@ var knownOpts = {
     "tidalVisuals": Boolean,
     "tidalCabal": Boolean,
     "tidalCustom": [path],
+    "scOSC": Boolean,
     "newlines-as-spaces" : Boolean
 };
 
@@ -55,6 +56,7 @@ if(parsed['help']!=null) {
     stderr.write(" --feedback (-f)             send feedback from stdin to server\n");
     stderr.write(" --tidal (-t)                launch Tidal (as installed by stack)\n");
     stderr.write(" --tidalCabal                launch Tidal (as installed by cabal)\n");
+    stderr.write(" --scOSC                     send values to SC as OSC addresses\n");
     stderr.write(" --newlines-as-spaces (-n)   converts any received newlines to spaces on stdout\n");
     process.exit(1);
 }
@@ -73,6 +75,10 @@ var oscPort = parsed['osc-port'];
 var feedback = parsed['feedback'];
 var wsAddress = "ws://" + server + ":" + (port.toString());
 var password = parsed['password'];
+var scOSC = parsed['scOSC'];
+if(scOSC != null && oscPort == null) {
+  oscPort = 57120;
+}
 if(oscPort!=null && password == null) {
     stderr.write("Error: Password required if an OSC port is specified\n");
     process.exit(1);
@@ -150,17 +156,22 @@ function sanitizeStringForTidal(x) {
   }
   return result;
 }
-
-if(oscPort !=null) {
+var udp;
+if(scOSC == null && oscPort !=null) {
   stderr.write("extramuros: listening for OSC on UDP port " + oscPort);
   udp = new osc.UDPPort( { localAddress: "0.0.0.0",localPort: oscPort});
+  udp.open();
+}
+else if(scOSC != null && oscPort != null) {
+  stderr.write("extramuros: creating OSC object for sending to SC at " + oscPort);
+  udp = new osc.UDPPort( { localAddress: "0.0.0.0",localPort: 57129 });
   udp.open();
 }
 
 var connectWs = function() {
     stderr.write("extramuros: connecting to " + wsAddress + "...\n");
     var ws = new WebSocket(wsAddress);
-    var udp,oscFunction,feedbackFunction;
+    var oscFunction,feedbackFunction;
 
     send = function(o) {
       try {ws.send(JSON.stringify(o))}
@@ -199,8 +210,18 @@ var connectWs = function() {
           s = sanitizeStringForTidal(s);
         }
         // console.log(s); // JUST TESTING
-        output.write(s+"\n");
-        stderr.write(s+"\n");
+        if(scOSC != null) {
+          try {
+            udp.send( { address: ("/" + s) },"127.0.0.1",oscPort);
+            stderr.write(s+"\n");
+          } catch(e) {
+            stderr.write("exception attempting to send OSC to SC: " + s + "\n");
+          }
+        }
+        else {
+          output.write(s+"\n");
+          stderr.write(s+"\n");
+        }
       }
     });
 

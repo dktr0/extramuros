@@ -1,17 +1,36 @@
 body {
   background: black;
-  color: white;
+  color: rgb(5%,5%,5%);
+  font-size: 50pt;
 }
 
 textarea {
   background: transparent;
-  color: white;
+  color: rgb(5%,5%,5%);
+  border: 1px solid rgb(5%,5%,5%);
   width: 400px;
+  font-size: 100pt;
+}
+
+input {
+  color: rgb(5%,5%,5%);
+  border: 1px solid rgb(5%,5%,5%);
 }
 
 .text {
   background: black;
   color: white;
+}
+
+#flash {
+  z-index: 10;
+  position: absolute;
+  left: 0%;
+  top: 35%;
+  width: 100%;
+  text-align: center;
+  color: rgb(100%,100%,100%);
+  font-size: 200pt;
 }
 
 .evalButton {
@@ -20,17 +39,17 @@ textarea {
 }
 
 #global {
-padding: 20px; 
-position: absolute; 
+padding: 20px;
+position: absolute;
 left: 0px;
 top: 0px;
 width: 100%;
-height: 100%; 
+height: 100%;
 }
 
 canvas {
 background: transparent;
-position: absolute; 
+position: absolute;
 left: 0px;
 top: 0px;
 }
