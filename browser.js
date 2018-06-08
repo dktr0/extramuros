@@ -82,6 +82,9 @@ function translateCode(x) {
   else if(x == "每天") return "meitian";
   else if(x == "谁的") return "sheide";
   else if(x == "不知道") return "buzhidao";
+  else if(x == "そう？") return "so?";
+  else if(x == "ねこ") return "cats";
+  else if(x == "元気？") return "How are you?";
   else return x;
 }
 
