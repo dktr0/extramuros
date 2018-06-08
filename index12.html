@@ -8,59 +8,40 @@
 <body onload="setup(12)">
 <div id="global">
 <table>
-
 <tr>
-<td></td>
 <td>Password: <input type="password" name="password" length="32" id="password" class="text"/></td>
 </tr>
-
-<tr>
-<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit1');"/></td>
-<td><textarea id="edit1" rows="5" disabled>******</textarea></td>
-<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit2');"/></td>
-<td><textarea id="edit2" rows="5" disabled>******</textarea></td>
-</tr>
-
-<tr>
-<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit3');"/></td>
-<td><textarea id="edit3" rows="5" disabled>******</textarea></td>
-<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit4');"/></td>
-<td><textarea id="edit4" rows="5" disabled>******</textarea></td>
-</tr>
-
-<tr>
-<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit5');"/></td>
-<td><textarea id="edit5" rows="5" disabled>******</textarea></td>
-<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit6');"/></td>
-<td><textarea id="edit6" rows="5" disabled>******</textarea></td>
-</tr>
-
-<tr>
-<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit7');"/></td>
-<td><textarea id="edit7" rows="5" disabled>******</textarea></td>
-<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit8');"/></td>
-<td><textarea id="edit8" rows="5" disabled>******</textarea></td>
-</tr>
-
-<tr>
-<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit9');"/></td>
-<td><textarea id="edit9" rows="5" disabled>******</textarea></td>
-<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit10');"/></td>
-<td><textarea id="edit10" rows="5" disabled>******</textarea></td>
-</tr>
-
-<tr>
-<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit11');"/></td>
-<td><textarea id="edit11" rows="5" disabled>******</textarea></td>
-<td><input type="button" value="eval" class="evalButton" onclick="evaluateBuffer('edit12');"/></td>
-<td><textarea id="edit12" rows="5" disabled>******</textarea></td>
-</tr>
-
-<tr>
-<td colspan="2"><textarea id="feedback" rows="6" style="width: 445px;"></textarea></td>
-</tr>
-
 </table>
+
+<div style="display: flex">
+<textarea style="flex-grow: 1" id="edit1" rows="3" disabled>******</textarea>
+<textarea style="flex-grow: 1" id="edit2" rows="3" disabled>******</textarea>
+</div>
+
+<div style="display: flex">
+<textarea style="flex-grow: 1" id="edit3" rows="3" disabled>******</textarea>
+<textarea style="flex-grow: 1" id="edit4" rows="3" disabled>******</textarea>
+</div>
+
+<div style="display: flex">
+<textarea style="flex-grow: 1" id="edit5" rows="3" disabled>******</textarea>
+<textarea style="flex-grow: 1" id="edit6" rows="3" disabled>******</textarea>
+</div>
+
+<div style="display: flex">
+<textarea style="flex-grow: 1" id="edit7" rows="3" disabled>******</textarea>
+<textarea style="flex-grow: 1" id="edit8" rows="3" disabled>******</textarea>
+</div>
+
+<div style="display: flex">
+<textarea style="flex-grow: 1" id="edit9" rows="3" disabled>******</textarea>
+<textarea style="flex-grow: 1" id="edit10" rows="3" disabled>******</textarea>
+</div>
+
+<div style="display: flex">
+<textarea style="flex-grow: 1" id="edit11" rows="3" disabled>******</textarea>
+<textarea style="flex-grow: 1" id="edit12" rows="3" disabled>******</textarea>
+</div>
 
 <script src="/channel/bcsocket.js"></script>
 <script src="/share/share.uncompressed.js"></script>
