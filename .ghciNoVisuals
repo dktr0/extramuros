@@ -1,45 +1,56 @@
+:set -XOverloadedStrings
+:set prompt ""
+:set prompt-cont ""
+
 import Sound.Tidal.Context
-(cps, getNow) <- bpsUtils
-(d1,t1) <- superDirtSetters getNow
-(d2,t2) <- superDirtSetters getNow
-(d3,t3) <- superDirtSetters getNow
-(d4,t4) <- superDirtSetters getNow
-(d5,t5) <- superDirtSetters getNow
-(d6,t6) <- superDirtSetters getNow
-(d7,t7) <- superDirtSetters getNow
-(d8,t8) <- superDirtSetters getNow
-(d9,t9) <- superDirtSetters getNow
-(d10,t10) <- superDirtSetters getNow
-(d11,t11) <- superDirtSetters getNow
-(d12,t12) <- superDirtSetters getNow
-(d13,t13) <- superDirtSetters getNow
-(d14,t14) <- superDirtSetters getNow
-(d15,t15) <- superDirtSetters getNow
-(d16,t16) <- superDirtSetters getNow
-(d17,t17) <- superDirtSetters getNow
-(d18,t18) <- superDirtSetters getNow
-(d19,t19) <- superDirtSetters getNow
-(d20,t20) <- superDirtSetters getNow
-(c1,ct1) <- dirtSetters getNow
-(c2,ct2) <- dirtSetters getNow
-(c3,ct3) <- dirtSetters getNow
-(c4,ct4) <- dirtSetters getNow
-(c5,ct5) <- dirtSetters getNow
-(c6,ct6) <- dirtSetters getNow
-(c7,ct7) <- dirtSetters getNow
-(c8,ct8) <- dirtSetters getNow
-(c9,ct9) <- dirtSetters getNow
-(c10,ct10) <- dirtSetters getNow
-(c11,ct11) <- dirtSetters getNow
-(c12,ct12) <- dirtSetters getNow
-(c13,ct13) <- dirtSetters getNow
-(c14,ct14) <- dirtSetters getNow
-(c15,ct15) <- dirtSetters getNow
-(c16,ct16) <- dirtSetters getNow
-(c17,ct17) <- dirtSetters getNow
-(c18,ct18) <- dirtSetters getNow
-(c19,ct19) <- dirtSetters getNow
-(c20,ct20) <- dirtSetters getNow
-let bps x = cps (x/2)
-let hush = mapM_ ($ silence) [c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20]
-let solo = (>>) hush
+
+-- total latency = oLatency + cFrameTimespan
+tidal <- startTidal (superdirtTarget {oLatency = 0.1, oAddress = "127.0.0.1", oPort = 57120}) (defaultConfig {cFrameTimespan = 1/20})
+
+let p = streamReplace tidal
+let hush = streamHush tidal
+let list = streamList tidal
+let mute = streamMute tidal
+let unmute = streamUnmute tidal
+let solo = streamSolo tidal
+let unsolo = streamUnsolo tidal
+let once = streamOnce tidal False
+let asap = streamOnce tidal True
+let nudgeAll = streamNudgeAll tidal
+let all = streamAll tidal
+let resetCycles = streamResetCycles tidal
+let setcps = asap . cps
+let xfade i = transition tidal (Sound.Tidal.Transition.xfadeIn 4) i
+let xfadeIn i t = transition tidal (Sound.Tidal.Transition.xfadeIn t) i
+let histpan i t = transition tidal (Sound.Tidal.Transition.histpan t) i
+let wait i t = transition tidal (Sound.Tidal.Transition.wait t) i
+let waitT i f t = transition tidal (Sound.Tidal.Transition.waitT f t) i
+let jump i = transition tidal (Sound.Tidal.Transition.jump) i
+let jumpIn i t = transition tidal (Sound.Tidal.Transition.jumpIn t) i
+let jumpIn' i t = transition tidal (Sound.Tidal.Transition.jumpIn' t) i
+let jumpMod i t = transition tidal (Sound.Tidal.Transition.jumpMod t) i
+let mortal i lifespan release = transition tidal (Sound.Tidal.Transition.mortal lifespan release) i
+let interpolate i = transition tidal (Sound.Tidal.Transition.interpolate) i
+let interpolateIn i t = transition tidal (Sound.Tidal.Transition.interpolateIn t) i
+let clutch i = transition tidal (Sound.Tidal.Transition.clutch) i
+let clutchIn i t = transition tidal (Sound.Tidal.Transition.clutchIn t) i
+let anticipate i = transition tidal (Sound.Tidal.Transition.anticipate) i
+let anticipateIn i t = transition tidal (Sound.Tidal.Transition.anticipateIn t) i
+let d1 = p 1
+let d2 = p 2
+let d3 = p 3
+let d4 = p 4
+let d5 = p 5
+let d6 = p 6
+let d7 = p 7
+let d8 = p 8
+let d9 = p 9
+let d10 = p 10
+let d11 = p 11
+let d12 = p 12
+let d13 = p 13
+let d14 = p 14
+let d15 = p 15
+let d16 = p 16
+
+:set prompt "tidal> "
