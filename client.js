@@ -28,6 +28,7 @@ var knownOpts = {
     "tidalVisuals": Boolean,
     "tidalCabal": Boolean,
     "tidalCustom": [path],
+    "sonic-pi": Boolean,
     "newlines-as-spaces" : Boolean
 };
 
@@ -55,6 +56,7 @@ if(parsed['help']!=null) {
     stderr.write(" --feedback (-f)             send feedback from stdin to server\n");
     stderr.write(" --tidal (-t)                launch Tidal (as installed by stack)\n");
     stderr.write(" --tidalCabal                launch Tidal (as installed by cabal)\n");
+    stderr.write(" --sonic-pi                  for Sonic Pi (each evaluation handled by sonic-pi-tool)\n");
     stderr.write(" --newlines-as-spaces (-n)   converts any received newlines to spaces on stdout\n");
     process.exit(1);
 }
@@ -78,6 +80,7 @@ if(oscPort!=null && password == null) {
     process.exit(1);
 }
 
+var sonicPi = parsed['sonic-pi'];
 var withTidal = parsed['tidal'];
 var withTidalCabal = parsed['tidalCabal'];
 var withTidalVisuals = parsed['tidalVisuals'];
@@ -198,9 +201,17 @@ var connectWs = function() {
         else if(withTidal) {
           s = sanitizeStringForTidal(s);
         }
-        // console.log(s); // JUST TESTING
-        output.write(s+"\n");
-        stderr.write(s+"\n");
+        if(sonicPi) {
+          sonicPiTool = spawn('sonic-pi-tool', ['eval-stdin']);
+          sonicPiTool.on('close', function (code) {
+            stderr.write('sonic-pi-tool process exited with code ' + code + "\n");
+          });
+          sonicPiTool.stdin.end(s); // or write and then EOF some other way???
+        }
+        else {
+          output.write(s+"\n");
+          stderr.write(s+"\n");
+        }
       }
     });
 
