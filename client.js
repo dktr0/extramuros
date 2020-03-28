@@ -56,10 +56,11 @@ if(parsed['help']!=null) {
     stderr.write(" --server (-s) [address]     address of server's downstream (default:localhost)\n");
     stderr.write(" --ws-port [number]          port for OSC WebSocket connection to server (default: 8000)\n");
     stderr.write(" --osc-port [number]         UDP port on which to receive OSC messages (default: none)\n");
-    stderr.write(" --password [word] (-p)      password to authenticate messages to server\n");
     stderr.write(" --feedback (-f)             send feedback from stdin to server\n");
+    stderr.write(" --password [word] (-p)      password to authenticate messages to server (only necessary if osc-port or feedback used)\n");
     stderr.write(" --tidal (-t)                launch Tidal (as installed by stack)\n");
     stderr.write(" --tidalCabal                launch Tidal (as installed by cabal)\n");
+    stderr.write(" --tidalCustom [path]        launch Tidal and use the BootTidal.hs at [path] (also add --tidalCabal if installed with cabal)\n");
     stderr.write(" --sonic-pi                  for Sonic Pi (each evaluation handled by sonic-pi-tool)\n");
     stderr.write(" --foxdot (-d)               launch FoxDot\n");
     stderr.write(" --newlines-as-spaces (-n)   converts any received newlines to spaces on stdout\n");
